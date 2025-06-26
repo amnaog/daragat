@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QuranCircle</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8fbfc;
+      color: #222;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .btn {
+      margin-left: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    .login {
+      background: none;
+    }
+
+    .signup {
+      background-color: #29a3a3;
+      color: white;
+    }
+
+    .hero {
+      background: url('https://images.unsplash.com/photo-1589640408032-f5db6636fcff') no-repeat center center/cover;
+      height: 85vh;
+      position: relative;
+      color: white;
+      text-align: center;
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.5);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .hero-buttons .btn {
+      margin: 0.5rem;
+      padding: 0.7rem 1.5rem;
+    }
+
+    .student {
+      background-color: #1bb9a8;
+      color: white;
+    }
+
+    .teacher {
+      background-color: #f1b54c;
+    }
+
+    .mission, .features, .benefits, .cta {
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .mission h4 {
+      color: #2ca89a;
+      margin-bottom: 0.5rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .feature-card {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .feature-card h3 {
+      margin-top: 1rem;
+    }
+
+    .benefits {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      background-color: #f3f7f8;
+    }
+
+    .benefit {
+      width: 300px;
+      margin: 1rem;
+      text-align: left;
+    }
+
+    .benefit ul {
+      padding-left: 1.2rem;
+    }
+
+    .cta {
+      background-color: #2b9795;
+      color: white;
+      padding: 3rem 2rem;
+    }
+
+    .journey {
+      background-color: #f5b644;
+      color: black;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+
+    footer {
+      background-color: #eaf2f3;
+      padding: 1.5rem 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .socials {
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">📖 QuranCircle</div>
+    <nav>
+      <button class="btn login">Log In</button>
+      <button class="btn signup">Sign Up</button>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="overlay">
+      <h1>Your Gateway to Organized,<br/>Smart, and Inspiring Quran Learning</h1>
+      <p>A smart platform for managing Quran memorization circles, connecting students and teachers with modern, easy-to-use tools.</p>
+      <div class="hero-buttons">
+        <button class="btn student">Sign Up as Student</button>
+        <button class="btn teacher">Sign Up as Teacher</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="mission">
+    <h4>Our Mission</h4>
+    <h2>Supporting Quran memorization with modern tools</h2>
+    <p>We are dedicated to empowering Quran memorization circles by providing an intuitive, all-in-one platform that blends tradition with technology.</p>
+  </section>
+
+  <section class="features">
+    <h2>Everything you need in one place</h2>
+    <div class="features-grid">
+      <div class="feature-card">📈<h3>Smart Progress Tracking</h3></div>
+      <div class="feature-card">📅<h3>Attendance & Scheduling</h3></div>
+      <div class="feature-card">🧑‍🤝‍🧑<h3>Role-Based Access</h3></div>
+      <div class="feature-card">📝<h3>Assignments & Feedback</h3></div>
+      <div class="feature-card">👤<h3>Student Profiles</h3></div>
+      <div class="feature-card">🔐<h3>Secure and Easy to Use</h3></div>
+    </div>
+  </section>
+
+  <section class="benefits">
+    <div class="benefit">
+      <h3>Empowering Teachers</h3>
+      <ul>
+        <li>✔ Effortlessly manage circles</li>
+        <li>✔ Assign tasks and track progress</li>
+        <li>✔ Provide personalized feedback</li>
+        <li>✔ Communicate securely</li>
+      </ul>
+    </div>
+    <div class="benefit">
+      <h3>Inspiring Students</h3>
+      <ul>
+        <li>✔ Visualize progress</li>
+        <li>✔ View assignments & feedback</li>
+        <li>✔ Stay motivated</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="cta">
+    <h2>Create Your Account – It’s Free!</h2>
+    <p>Join hundreds of Quran circles transforming their learning experience.</p>
+    <button class="btn journey">Start Your Journey Today</button>
+  </section>
+
+  <footer>
+    <div>© 2025 QuranCircle. All rights reserved.</div>
+    <div class="socials">🔗 📘 🕊️ 📸</div>
+  </footer>
+
+  <script>
+    document.querySelector('.student').onclick = () => {
+      alert("Redirect to Student Sign-Up Page");
+    };
+
+    document.querySelector('.teacher').onclick = () => {
+      alert("Redirect to Teacher Sign-Up Page");
+    };
+
+    document.querySelector('.journey').onclick = () => {
+      alert("Redirecting to Registration Page...");
+    };
+  </script>
+</body>
+</html>
