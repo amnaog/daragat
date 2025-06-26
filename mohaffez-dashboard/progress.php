@@ -1,0 +1,88 @@
+<?php include 'db.php'; ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Progress - QuranFlow</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="sidebar">
+    <h2 class="logo">QuranFlow</h2>
+    <ul class="menu">
+      <li><a href="index.php">Dashboard</a></li>
+      <li><a href="students.php">Students</a></li>
+      <li><a href="progress.php">Progress</a></li>
+      <li><a href="messages.php">Messages <span class="badge">3</span></a></li>
+    </ul>
+    <div class="user-info">
+      <div class="avatar"></div>
+      <div class="email">Sheikh Abdullah<br><small>sheikh.abdullah@quran.com</small></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <header>
+      <h2>Progress</h2>
+    </header>
+
+    <div class="progress-layout">
+      <!-- Progress Chart -->
+      <div class="progress-chart-box">
+        <h4>Overall Progress Trend</h4>
+        <p>Average progress of all students over the last 4 weeks.</p>
+        <canvas id="progressChart" height="120"></canvas>
+      </div>
+
+      <!-- Achievements -->
+      <div class="progress-achievements">
+        <h4>Recent Achievements</h4>
+        <p>Latest progress from your students.</p>
+        <ul class="achievement-list">
+          <li><div class="avatar-sm"></div> <b>Ali ibn Abi Talib</b><br><span>Memorized Surah Al-Baqarah</span><small>12 days ago</small></li>
+          <li><div class="avatar-sm"></div> <b>Zayd ibn Thabit</b><br><span>Memorized Surah Yasin</span><small>12 days ago</small></li>
+          <li><div class="avatar-sm"></div> <b>Yusuf Ahmed</b><br><span>Memorized Surah Al-Asr</span><small>13 days ago</small></li>
+          <li><div class="avatar-sm"></div> <b>Khadija Al-Kubra</b><br><span>Memorized Surah Al-Falaq</span><small>13 days ago</small></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('progressChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['May 31', 'Jun 7', 'Jun 14'],
+        datasets: [{
+          label: 'Average Progress',
+          data: [50, 53, 55, 60],
+          borderColor: '#22c55e',
+          backgroundColor: '#22c55e',
+          tension: 0.3,
+          pointRadius: 5,
+          pointHoverRadius: 6,
+          fill: false,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: { color: '#e5e7eb' }
+          },
+          x: {
+            grid: { display: false }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

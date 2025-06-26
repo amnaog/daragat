@@ -1,0 +1,48 @@
+<?php include 'db.php'; ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Messages - QuranFlow</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="sidebar">
+    <h2 class="logo">QuranFlow</h2>
+    <ul class="menu">
+      <li><a href="index.php">Dashboard</a></li>
+      <li><a href="students.php">Students</a></li>
+      <li><a href="progress.php">Progress</a></li>
+      <li><a href="messages.php">Messages <span class="badge">3</span></a></li>
+    </ul>
+    <div class="user-info">
+      <div class="avatar"></div>
+      <div class="email">Sheikh Abdullah<br><small>sheikh.abdullah@quran.com</small></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <header>
+      <h2>New Message</h2>
+      <p>Send a message to one of your students.</p>
+    </header>
+
+    <form class="message-form">
+      <label for="student">Student</label>
+      <select id="student" name="student">
+        <option>Select a student</option>
+        <option>Yusuf Ahmed</option>
+        <option>Fatima Al-Fihri</option>
+        <option>Ali ibn Abi Talib</option>
+        <option>Aisha bint Abu Bakr</option>
+      </select>
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="6" placeholder="Write your message here..."></textarea>
+
+      <button type="submit" class="send-button">Send Message</button>
+    </form>
+  </div>
+</body>
+</html>
