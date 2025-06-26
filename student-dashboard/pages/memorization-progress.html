@@ -2,81 +2,178 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Memorization Progress</title>
-  <link rel="stylesheet" href="../styles/main.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      background-color: #f9fafb;
+    }
+    .sidebar {
+      width: 240px;
+      background: #0f172a;
+      color: white;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .sidebar .logo {
+      font-weight: bold;
+      margin-bottom: 30px;
+      font-size: 18px;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar ul li {
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .sidebar ul li.active,
+    .sidebar ul li:hover {
+      background-color: #1e293b;
+    }
+    .sidebar footer {
+      margin-top: auto;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    .main {
+      flex: 1;
+      padding: 30px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h1 {
+      margin: 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      color: #475569;
+    }
+    .card p {
+      font-size: 14px;
+      color: #0f172a;
+      margin: 0;
+    }
+    .progress-bar {
+      background-color: #e2e8f0;
+      height: 6px;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .progress {
+      height: 100%;
+      background-color: #16a34a;
+    }
+    .button-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .button-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .button-card:hover {
+      background: #eef2f7;
+    }
+    .button-card i {
+      font-size: 24px;
+      display: block;
+      margin-bottom: 10px;
+      color: #059669;
+    }
+  </style>
 </head>
 <body>
-  <div class="dashboard-container">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="logo">
-        <i class="fa-solid fa-book-open"></i>
-        <span>Quranic Compass</span>
-        <small>Progress Tracker</small>
+  <aside class="sidebar">
+    <div class="logo">📗 Quranic Compass<br><small>Progress Tracker</small></div>
+    <ul>
+      <li>Dashboard</li>
+      <li class="active">Memorization Progress</li>
+      <li>Memorization Plan</li>
+      <li>Notifications</li>
+      <li>Profile</li>
+    </ul>
+    <footer>May Allah guide your journey</footer>
+  </aside>
+
+  <main class="main">
+    <div class="header">
+      <h1>Memorization Progress</h1>
+      <span>📅 6/26/2025</span>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Total Surahs</h2>
+        <p>114</p>
+        <div class="progress-bar"><div class="progress" style="width: 13%;"></div></div>
+        <small>13% memorized</small>
       </div>
-      <nav>
-        <ul>
-          <li><a href="../index.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
-          <li class="active"><i class="fa-solid fa-chart-line"></i> Memorization Progress</li>
-          <li><a href="memorization-plan.html"><i class="fa-solid fa-calendar-check"></i> Memorization Plan</a></li>
-          <li><a href="notifications.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
-          <li><a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a></li>
-        </ul>
-      </nav>
-    </aside>
+      <div class="card">
+        <h2>Juz Completed</h2>
+        <p>2 of 30</p>
+        <div class="progress-bar"><div class="progress" style="width: 6.6%;"></div></div>
+        <small>6.6%</small>
+      </div>
+      <div class="card">
+        <h2>Average Daily Verses</h2>
+        <p>4.3 verses/day</p>
+      </div>
+      <div class="card">
+        <h2>Estimated Completion</h2>
+        <p>in 275 days</p>
+      </div>
+    </div>
 
-    <!-- Main Content -->
-    <main class="main-content">
-      <header class="main-header">
-        <h1>Memorization Progress</h1>
-        <p>Track how far you've come in your Quranic memorization journey.</p>
-        <div class="date">6/26/2025</div>
-      </header>
-
-      <!-- Progress Table or Graph Placeholder -->
-      <section class="progress-cards">
-        <div class="card">
-          <h3>Total Surahs</h3>
-          <p>114</p>
-          <div class="progress-bar"><div style="width: 13%"></div></div>
-          <span class="percent">13% memorized</span>
-        </div>
-        <div class="card">
-          <h3>Juz Completed</h3>
-          <p>2 of 30</p>
-          <div class="progress-bar"><div style="width: 6.6%"></div></div>
-          <span class="percent">6.6%</span>
-        </div>
-        <div class="card">
-          <h3>Average Daily Verses</h3>
-          <p>4.3 verses/day</p>
-        </div>
-        <div class="card">
-          <h3>Estimated Completion</h3>
-          <p>in 275 days</p>
-        </div>
-      </section>
-
-      <section class="quick-actions">
-        <div class="action-card">
-          <i class="fa-solid fa-chart-pie"></i>
-          <h4>Detailed Charts</h4>
-          <p>View line graphs and breakdowns</p>
-        </div>
-        <div class="action-card">
-          <i class="fa-solid fa-table"></i>
-          <h4>Memorized Verses</h4>
-          <p>Surah and verse mapping table</p>
-        </div>
-        <div class="action-card">
-          <i class="fa-solid fa-gear"></i>
-          <h4>Adjust Goals</h4>
-          <p>Set weekly or monthly targets</p>
-        </div>
-      </section>
-    </main>
-  </div>
+    <div class="button-cards">
+      <div class="button-card">
+        <i>📊</i>
+        <strong>Detailed Charts</strong>
+        <p>View line graphs and breakdowns</p>
+      </div>
+      <div class="button-card">
+        <i>📖</i>
+        <strong>Memorized Verses</strong>
+        <p>Surah and verse mapping table</p>
+      </div>
+      <div class="button-card">
+        <i>⚙️</i>
+        <strong>Adjust Goals</strong>
+        <p>Set weekly or monthly targets</p>
+      </div>
+    </div>
+  </main>
 </body>
 </html>
