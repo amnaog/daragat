@@ -2,7 +2,7 @@
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db   = "quran_circle_nexus";
+$db   = "daragat";
 
 $conn = mysqli_connect($host, $user, $pass, $db);
 
