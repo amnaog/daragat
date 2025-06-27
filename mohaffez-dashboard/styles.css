@@ -6,6 +6,10 @@
 }
 
 /* BASE */
+html, body {
+  height: 100%;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   background-color: #f9fafb;
@@ -33,17 +37,25 @@ body {
 
 .menu {
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .menu li {
-  padding: 12px 10px;
   margin-bottom: 10px;
-  border-radius: 6px;
-  cursor: pointer;
 }
 
-.menu li.active,
-.menu li:hover {
+.menu li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 12px 10px;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+.menu li a:hover,
+.menu li a.active {
   background-color: #1e293b;
 }
 
@@ -139,14 +151,20 @@ header p {
   color: #4b5563;
 }
 
+.actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+
 .edit-btn,
 .view-btn {
-  margin-top: 12px;
   padding: 6px 14px;
   font-size: 13px;
   border-radius: 5px;
   cursor: pointer;
   border: none;
+  text-decoration: none;
 }
 
 .edit-btn {
@@ -157,7 +175,6 @@ header p {
 .view-btn {
   background-color: #22c55e;
   color: white;
-  margin-left: 8px;
 }
 
 /* STUDENTS PAGE */
@@ -281,7 +298,8 @@ tbody tr {
 /* MESSAGES PAGE */
 .message-form {
   background-color: white;
-  padding: 30px;border-radius: 12px;
+  padding: 30px;
+  border-radius: 12px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.04);
   max-width: 600px;
   margin-top: 30px;
@@ -321,13 +339,56 @@ tbody tr {
 .send-button:hover {
   background-color: #16a34a;
 }
-.sidebar .menu a {
-  color: white;
-  text-decoration: none;
-  display: block;
-  transition: 0.2s;
+.edit-form-container {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 600px;
+  margin-top: 40px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
 
-.sidebar .menu a:hover {
-  color: #ffffff;
+.edit-form-container h2 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.edit-form-container p {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 25px;
+}
+
+.edit-form-container label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+.edit-form-container input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: #f9fafb;
+  margin-top: 4px;
+}
+
+.save-button {
+  margin-top: 25px;
+  padding: 10px 18px;
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.save-button:hover {
+  background-color: #16a34a;
 }

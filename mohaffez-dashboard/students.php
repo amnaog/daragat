@@ -15,7 +15,7 @@ include 'db.php'; // الاتصال بقاعدة البيانات
     <h2 class="logo">QuranFlow</h2>
     <ul class="menu">
       <li><a href="index.php">Dashboard</a></li>
-      <li><a href="students.php">Students</a></li>
+      <li><a href="students.php"class="active">Students</a></li>
       <li><a href="progress.php">Progress</a></li>
       <li><a href="messages.php">Messages <span class="badge">3</span></a></li>
     </ul>

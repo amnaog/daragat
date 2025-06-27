@@ -1,4 +1,37 @@
-<?php include 'db.php'; ?>
+<?php
+include 'db.php';
+
+// تحضير بيانات الرسم البياني لآخر 4 أسابيع
+$weekly_avg = [];
+$labels = [];
+
+for ($i = 3; $i >= 0; $i--) {
+    $start = date('Y-m-d', strtotime("-$i week"));
+    $end = date('Y-m-d', strtotime("-" . ($i - 1) . " week"));
+
+    $labels[] = date('M d', strtotime($start)); // مثال: Jun 12
+
+    $query = "SELECT AVG(progress_percent) as avg_progress 
+              FROM reports 
+              WHERE created_at BETWEEN '$start' AND '$end'";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+    $weekly_avg[] = round($row['avg_progress'] ?? 0);
+}
+
+// سحب آخر 4 إنجازات
+$achievements = [];
+$query = "SELECT students.full_name, reports.performance, reports.created_at 
+          FROM reports 
+          JOIN students ON reports.student_id = students.id 
+          ORDER BY reports.created_at DESC 
+          LIMIT 4";
+$result = mysqli_query($conn, $query);
+while ($row = mysqli_fetch_assoc($result)) {
+    $achievements[] = $row;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +47,7 @@
     <ul class="menu">
       <li><a href="index.php">Dashboard</a></li>
       <li><a href="students.php">Students</a></li>
-      <li><a href="progress.php">Progress</a></li>
+      <li><a href="progress.php" class="active">Progress</a></li>
       <li><a href="messages.php">Messages <span class="badge">3</span></a></li>
     </ul>
     <div class="user-info">
@@ -41,10 +74,19 @@
         <h4>Recent Achievements</h4>
         <p>Latest progress from your students.</p>
         <ul class="achievement-list">
-          <li><div class="avatar-sm"></div> <b>Ali ibn Abi Talib</b><br><span>Memorized Surah Al-Baqarah</span><small>12 days ago</small></li>
-          <li><div class="avatar-sm"></div> <b>Zayd ibn Thabit</b><br><span>Memorized Surah Yasin</span><small>12 days ago</small></li>
-          <li><div class="avatar-sm"></div> <b>Yusuf Ahmed</b><br><span>Memorized Surah Al-Asr</span><small>13 days ago</small></li>
-          <li><div class="avatar-sm"></div> <b>Khadija Al-Kubra</b><br><span>Memorized Surah Al-Falaq</span><small>13 days ago</small></li>
+          <?php foreach ($achievements as $item): ?>
+            <li>
+              <div class="avatar-sm"></div> 
+              <b><?php echo $item['full_name']; ?></b><br>
+              <span><?php echo htmlspecialchars($item['performance']); ?></span>
+              <small>
+                <?php
+                  $daysAgo = (new DateTime())->diff(new DateTime($item['created_at']))->days;
+                  echo "$daysAgo days ago";
+                ?>
+              </small>
+            </li>
+          <?php endforeach; ?>
         </ul>
       </div>
     </div>
@@ -55,10 +97,10 @@
     new Chart(ctx, {
       type: 'line',
       data: {
-        labels: ['May 31', 'Jun 7', 'Jun 14'],
+        labels: <?php echo json_encode($labels); ?>,
         datasets: [{
           label: 'Average Progress',
-          data: [50, 53, 55, 60],
+          data: <?php echo json_encode($weekly_avg); ?>,
           borderColor: '#22c55e',
           backgroundColor: '#22c55e',
           tension: 0.3,
