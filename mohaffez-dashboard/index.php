@@ -16,19 +16,32 @@ $halaqat_result = $conn->query($halaqat_sql);
 // التحقق من الحلقة المختارة
 $selected_halaqa_id = isset($_GET['halaqa_id']) ? intval($_GET['halaqa_id']) : null;
 
-// جلب طلاب الحلقة المحددة (إن وجدت)
+// جلب طلاب الحلقة المحددة
 $students = [];
 if ($selected_halaqa_id) {
     $students_sql = "SELECT * FROM students WHERE halaqa_id = $selected_halaqa_id";
     $students_result = $conn->query($students_sql);
     if ($students_result && $students_result->num_rows > 0) {
         while ($row = $students_result->fetch_assoc()) {
+            $student_id = $row['id'];
+            // جلب آخر تقرير لهذا الطالب من reports
+            $report_sql = "SELECT performance, created_at 
+                           FROM reports 
+                           WHERE student_id = $student_id 
+                           ORDER BY created_at DESC 
+                           LIMIT 1";
+            $report_result = $conn->query($report_sql);
+            $report = $report_result->fetch_assoc();
+
+            // أضف التقرير للطالب
+            $row['last_performance'] = $report['performance'] ?? null;
+            $row['last_date'] = $report['created_at'] ?? null;
+
             $students[] = $row;
         }
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -90,8 +103,7 @@ if ($selected_halaqa_id) {
                             <th>Level</th>
                             <th>Progress</th>
                             <th>Last Memorized</th>
-                            <th>Actions</th>
-                        </tr>
+                            <th>Actions</th></tr>
                     </thead>
                     <tbody>
                         <?php foreach ($students as $student): ?>
@@ -102,13 +114,17 @@ if ($selected_halaqa_id) {
                                 </td>
                                 <td><?= htmlspecialchars($student['level']) ?></td>
                                 <td>
-                                    <div class="progress"><div class="bar" style="width: <?= intval($student['progress']) ?>%;"></div>
+                                    <div class="progress">
+                                        <div class="bar" style="width: <?= intval($student['progress']) ?>%;"></div>
                                     </div>
                                     <?= intval($student['progress']) ?>%
                                 </td>
                                 <td>
-                                    <?php if ($student['last_memorized_sura']): ?>
-                                        Surah <?= htmlspecialchars($student['last_memorized_sura']) ?> on <?= htmlspecialchars($student['last_memorized_date']) ?>
+                                    <?php if ($student['last_performance'] && $student['last_date']): ?>
+                                        <div class="memorized-box">
+                                            <div class="surah-name"><?= htmlspecialchars($student['last_performance']) ?></div>
+                                            <div class="memorized-date"><?= date('Y-m-d', strtotime($student['last_date'])) ?></div>
+                                        </div>
                                     <?php else: ?>
                                         —
                                     <?php endif; ?>
@@ -121,6 +137,7 @@ if ($selected_halaqa_id) {
             </div>
         <?php endif; ?>
     </div>
+
     <script>
     document.addEventListener('DOMContentLoaded', function () {
         const searchInput = document.getElementById('searchInput');
@@ -143,7 +160,7 @@ if ($selected_halaqa_id) {
             });
         }
     });
-</script>
+    </script>
 </body>
 </html>
 

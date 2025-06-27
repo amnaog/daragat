@@ -417,3 +417,16 @@ tbody tr {
 .cancel-button:hover {
   background-color: #d1d5db;
 }
+.memorized-box {
+    line-height: 1.4;
+}
+
+.memorized-box .surah-name {
+    font-weight: 600;
+    color: #111827;
+}
+
+.memorized-box .memorized-date {
+    font-size: 13px;
+    color: #6b7280;
+}
