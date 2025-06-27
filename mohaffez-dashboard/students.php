@@ -1,5 +1,30 @@
 <?php
 include 'db.php'; // الاتصال بقاعدة البيانات
+
+// جلب بيانات الطلاب مع آخر تقرير لهم
+$students = [];
+$sql = "SELECT * FROM students";
+$result = mysqli_query($conn, $sql);
+
+if ($result && mysqli_num_rows($result) > 0) {
+    while ($student = mysqli_fetch_assoc($result)) {
+        $student_id = $student['id'];
+
+        // جلب آخر تقرير للطالب
+        $report_sql = "SELECT performance, created_at 
+                       FROM reports 
+                       WHERE student_id = $student_id 
+                       ORDER BY created_at DESC 
+                       LIMIT 1";
+        $report_result = mysqli_query($conn, $report_sql);
+        $report = mysqli_fetch_assoc($report_result);
+
+        $student['last_performance'] = $report['performance'] ?? null;
+        $student['last_date'] = $report['created_at'] ?? null;
+
+        $students[] = $student;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +40,7 @@ include 'db.php'; // الاتصال بقاعدة البيانات
     <h2 class="logo">QuranFlow</h2>
     <ul class="menu">
       <li><a href="index.php">Dashboard</a></li>
-      <li><a href="students.php"class="active">Students</a></li>
+      <li><a href="students.php" class="active">Students</a></li>
       <li><a href="progress.php">Progress</a></li>
       <li><a href="messages.php">Messages <span class="badge">3</span></a></li>
     </ul>
@@ -43,29 +68,31 @@ include 'db.php'; // الاتصال بقاعدة البيانات
           </tr>
         </thead>
         <tbody>
-          <?php
-          $query = "SELECT * FROM students";
-          $result = mysqli_query($conn, $query);
-
-          if (mysqli_num_rows($result) > 0):
-            while ($row = mysqli_fetch_assoc($result)) :
-          ?>
+          <?php if (!empty($students)): ?>
+            <?php foreach ($students as $student): ?>
               <tr>
-                <td><div class="avatar-sm"></div> <?= htmlspecialchars($row['full_name']) ?></td>
-                <td>--</td> <!-- يمكنك تحديثها لاحقًا ببيانات المستوى -->
+                <td><div class="avatar-sm"></div> <?= htmlspecialchars($student['full_name']) ?></td>
+                <td><?= htmlspecialchars($student['level'] ?? '--') ?></td>
                 <td>
                   <div class="progress">
-                    <div class="bar" style="width: 0%"></div>
+                    <div class="bar" style="width: <?= intval($student['progress']) ?>%"></div>
                   </div>
-                  0%
+                  <?= intval($student['progress']) ?>%
                 </td>
-                <td>--</td>
-                <td>🗒</td>
+                <td>
+                  <?php if ($student['last_performance'] && $student['last_date']): ?>
+                    <div class="memorized-box">
+                      <div class="surah-name">Surah <?= htmlspecialchars($student['last_performance']) ?></div>
+                      <div class="memorized-date"><?= date('Y-m-d', strtotime($student['last_date'])) ?></div>
+                    </div>
+                  <?php else: ?>
+                    —
+                  <?php endif; ?>
+                </td>
+                <td>...</td>
               </tr>
-          <?php
-            endwhile;
-          else:
-          ?>
+            <?php endforeach; ?>
+          <?php else: ?>
             <tr><td colspan="5">No students found.</td></tr>
           <?php endif; ?>
         </tbody>
