@@ -70,7 +70,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="schedule">Schedule:</label>
             <input type="text" id="schedule" name="schedule" value="<?= htmlspecialchars($halaqa['schedule']) ?>" required>
 
-            <button type="submit" class="save-button">💾 Save Changes</button>
+       <div class="button-group">
+  <button type="submit" class="save-button">💾 Save Changes</button>
+  <a href="index.php" class="cancel-button">Cancel</a>
+</div>
         </form>
     </div>
 </div>
