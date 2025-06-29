@@ -11,11 +11,19 @@ while ($row = mysqli_fetch_assoc($notificationsResult)) {
     $notifications[] = $row;
 }
 
-// fetch progress data
-$progressData = [];
-$result = mysqli_query($conn, "SELECT full_name, progress FROM students ORDER BY progress DESC LIMIT 5");
+// generate students activity based on actual creation dates
+$studentsPerDay = [];
+$weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+foreach ($weekdays as $day) {
+    $studentsPerDay[$day] = 0;
+}
+
+$result = mysqli_query($conn, "SELECT created_at FROM students");
 while ($row = mysqli_fetch_assoc($result)) {
-    $progressData[] = $row;
+    $weekday = date('D', strtotime($row['created_at']));
+    if (isset($studentsPerDay[$weekday])) {
+        $studentsPerDay[$weekday]++;
+    }
 }
 ?>
 
@@ -75,7 +83,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         .flex-row .card {
             flex: 1;
         }
-        .quick-actions button {
+        .quick-actions a {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -87,6 +95,10 @@ while ($row = mysqli_fetch_assoc($result)) {
             border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
+            text-decoration: none;
+        }
+        .quick-actions a svg {
+            margin-right: 8px;
         }
         .notifications li {
             margin-bottom: 12px;
@@ -113,28 +125,35 @@ while ($row = mysqli_fetch_assoc($result)) {
     <a href="#">Notifications</a>
     <a href="#">Roles</a>
 </div>
+
 <div class="main">
     <h1>Quran Circle Nexus <span class="badge">Admin</span></h1>
     <div class="flex-row">
         <div class="card">
             <h3>Total Students</h3>
-            <p style="font-size: 32px; color: #16a34a;"><?php echo $studentsCount; ?></p>
+            <p style="font-size: 32px; color: #16a34a;">
+                <?php echo $studentsCount; ?>
+            </p>
         </div>
         <div class="card">
             <h3>Total Teachers</h3>
-            <p style="font-size: 32px; color: #16a34a;"><?php echo $teachersCount; ?></p>
+            <p style="font-size: 32px; color: #16a34a;">
+                <?php echo $teachersCount; ?>
+            </p>
         </div>
         <div class="card">
             <h3>Active Halaqat</h3>
-            <p style="font-size: 32px; color: #16a34a;"><?php echo $halaqatCount; ?></p>
+            <p style="font-size: 32px; color: #16a34a;">
+                <?php echo $halaqatCount; ?>
+            </p>
         </div>
     </div>
     <div class="flex-row">
-        <div class="card">
+        <div class="card quick-actions">
             <h3>Quick Actions</h3>
-            <button>➕ Add Teacher</button>
-            <button>👤 Add Student</button>
-            <button>📋 Add Circle</button>
+            <a href="add_teacher.php">➕ Add Teacher</a>
+            <a href="add_student.php">👤 Add Student</a>
+            <a href="add_circle.php">☰ Add Circle</a>
         </div>
         <div class="card">
             <h3>Recent Activity</h3>
@@ -157,10 +176,10 @@ const ctx = document.getElementById('progressChart').getContext('2d');
 const chart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: <?php echo json_encode(array_column($progressData, 'full_name')); ?>,
+        labels: <?php echo json_encode(array_keys($studentsPerDay)); ?>,
         datasets: [{
-            label: 'Progress %',
-            data: <?php echo json_encode(array_column($progressData, 'progress')); ?>,
+            label: 'Students Joined',
+            data: <?php echo json_encode(array_values($studentsPerDay)); ?>,
             backgroundColor: 'rgba(34,197,94,0.2)',
             borderColor: '#22c55e',
             fill: true,
@@ -179,7 +198,7 @@ const chart = new Chart(ctx, {
         scales: {
             y: {
                 beginAtZero: true,
-                max: 100
+                precision: 0
             }
         }
     }

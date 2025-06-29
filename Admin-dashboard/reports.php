@@ -1,88 +1,98 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "quran_circle");
-if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
+include 'db.php';
 
-// جلب بيانات الحضور (عدد حضور كل يوم)
-$attendance = [];
-$days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+// إعداد بيانات الرسم البياني حسب الأيام
+$days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+$data = [];
+
 foreach ($days as $day) {
-    $result = $conn->query("SELECT COUNT(*) as total FROM attendance WHERE DAYNAME(date) = '$day'");
-    $attendance[] = $result->fetch_assoc()['total'];
+    $query = "SELECT COUNT(*) as total FROM reports WHERE DAYNAME(created_at) = '$day'";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+    $data[] = $row['total'];
 }
-
-// جلب سجل الأحداث
-$logs = $conn->query("SELECT * FROM system_logs ORDER BY created_at DESC LIMIT 5");
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Reports & Activity</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body { margin: 0; font-family: sans-serif; background: #f9f9f9; }
-        .sidebar { width: 220px; background: #0f172a; height: 100vh; position: fixed; color: white; padding: 20px; }
-        .sidebar a { color: white; display: block; margin: 15px 0; text-decoration: none; }
-        .main { margin-left: 240px; padding: 30px; }
-        .card { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Reports</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f9f9f9; }
+    .sidebar {
+      background: #0f172a; color: white; width: 220px; height: 100vh; position: fixed; padding: 20px 10px;
+    }
+    .sidebar h2 { font-size: 18px; margin-bottom: 30px; }
+    .sidebar a { display: block; padding: 10px; color: white; text-decoration: none; border-radius: 6px; margin-bottom: 10px; }
+    .sidebar a.active, .sidebar a:hover { background-color: #22c55e; }
+    .main { margin-left: 240px; padding: 30px; }
+    .card {
+      background: white; border-radius: 10px; padding: 20px; margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .chart-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+    canvas { width: 100% !important; height: 250px !important; }
+  </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>Quran Circle</h2>
-        <a href="#">Dashboard</a>
-        <a href="#">Teachers</a>
-        <a href="#">Students</a>
-        <a href="#">Halaqat</a>
-        <a href="#">Reports</a>
-        <a href="#">Notifications</a>
-        <a href="#">Roles</a>
+<div class="sidebar">
+  <h2>Admin Panel</h2>
+  <a href="dashboard.php">Dashboard</a>
+  <a href="teachers.php">Teachers</a>
+  <a href="students.php">Students</a>
+  <a href="halaqat.php">Halaqat</a>
+  <a class="active" href="reports.php">Reports</a>
+  <a href="notifications.php">Notifications</a>
+  <a href="roles.php">Roles</a>
+</div>
+
+<div class="main">
+  <h2>Reports & Activity</h2>
+
+  <div class="card">
+    <h3>Student Attendance Trend</h3>
+    <div class="chart-wrapper">
+      <canvas id="attendanceChart"></canvas>
     </div>
+  </div>
 
-    <div class="main">
-        <h2>Reports & Activity</h2>
+  <div class="card">
+    <h3>System Logs</h3>
+    <p>06:44 AM: Attendance recorded for Circle 1</p>
+    <p>Yesterday: Student Khalid joined Circle 2</p>
+    <p>2 days ago: Absence alert generated for Jamal</p>
+  </div>
+</div>
 
-        <div class="card">
-            <h3>Student Attendance Trend</h3>
-            <canvas id="attendanceChart" width="600" height="200"></canvas>
-        </div>
-
-        <div class="card">
-            <h3>System Logs</h3>
-            <div>
-                <?php while ($log = $logs->fetch_assoc()): ?>
-                    <p><small><?= $log['created_at'] ?></small>: <?= $log['message'] ?></p>
-                <?php endwhile; ?>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const ctx = document.getElementById('attendanceChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-                datasets: [{
-                    label: 'Attendance',
-                    data: <?= json_encode($attendance) ?>,
-                    borderColor: '#10b981',
-                    backgroundColor: 'rgba(16,185,129,0.2)',
-                    tension: 0.3,
-                    fill: true,
-                    pointRadius: 5,
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    y: { beginAtZero: true }
-                }
-            }
-        });
-    </script>
+<script>
+  const ctx = document.getElementById('attendanceChart').getContext('2d');
+  const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+      datasets: [{
+        label: 'Reports Count',
+        data: <?php echo json_encode($data); ?>,
+        borderColor: '#22c55e',
+        backgroundColor: 'transparent',
+        tension: 0.3
+      }]
+    },
+    options: {
+      maintainAspectRatio: false,
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
 </body>
 </html>

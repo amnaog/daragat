@@ -1,117 +1,179 @@
 <?php
-// الاتصال بقاعدة البيانات
-$conn = new mysqli("localhost", "root", "", "quran_circle");
-if ($conn->connect_error) {
-    die("فشل الاتصال: " . $conn->connect_error);
-}
+include 'db.php';
 
-// إضافة معلم
-if (isset($_POST['add_teacher'])) {
-    $name = $_POST['name'];
-    $phone = $_POST['phone'];
-    $email = $_POST['email'];
-    $conn->query("INSERT INTO teachers (name, phone, email) VALUES ('$name', '$phone', '$email')");
+// Handle Add
+if (isset($_POST['action']) && $_POST['action'] === 'add') {
+    $name = mysqli_real_escape_string($conn, $_POST['full_name']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $phone = mysqli_real_escape_string($conn, $_POST['phone']);
+    mysqli_query($conn, "INSERT INTO teachers (full_name, email, phone) VALUES ('$name', '$email', '$phone')");
     header("Location: teachers.php");
     exit();
 }
 
-// تعديل معلم
-if (isset($_POST['edit_teacher'])) {
-    $id = $_POST['id'];
-    $name = $_POST['name'];
-    $phone = $_POST['phone'];
-    $email = $_POST['email'];
-    $conn->query("UPDATE teachers SET name='$name', phone='$phone', email='$email' WHERE id=$id");
+// Handle Update
+if (isset($_POST['action']) && $_POST['action'] === 'update') {
+    $id = intval($_POST['id']);
+    $name = mysqli_real_escape_string($conn, $_POST['full_name']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $phone = mysqli_real_escape_string($conn, $_POST['phone']);
+    mysqli_query($conn, "UPDATE teachers SET full_name='$name', email='$email', phone='$phone' WHERE id=$id");
     header("Location: teachers.php");
     exit();
 }
 
-// حذف معلم
+// Handle Delete
 if (isset($_GET['delete'])) {
-    $id = $_GET['delete'];
-    $conn->query("DELETE FROM teachers WHERE id=$id");
+    $id = intval($_GET['delete']);
+    mysqli_query($conn, "DELETE FROM teachers WHERE id=$id");
     header("Location: teachers.php");
     exit();
 }
 
-// جلب كل المعلمين
-$result = $conn->query("SELECT * FROM teachers");
+// Fetch teachers
+$teachers = mysqli_query($conn, "SELECT * FROM teachers");
+
+// Edit mode
+$editMode = false;
+$editData = null;
+if (isset($_GET['edit'])) {
+    $editId = intval($_GET['edit']);
+    $editResult = mysqli_query($conn, "SELECT * FROM teachers WHERE id=$editId");
+    $editData = mysqli_fetch_assoc($editResult);
+    $editMode = true;
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Teachers - Quran Circle Nexus</title>
+    <title>Manage Teachers</title>
     <style>
-        body { font-family: sans-serif; margin: 0; background: #f7f7f7; }
-        .sidebar { width: 220px; background: #0f172a; height: 100vh; position: fixed; color: white; padding: 20px; }
-        .sidebar h2 { color: white; margin-bottom: 30px; }
-        .sidebar a { color: white; display: block; margin: 15px 0; text-decoration: none; }
-        .main { margin-left: 240px; padding: 30px; }
-        table { width: 100%; background: white; border-radius: 8px; overflow: hidden; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
-        .actions a { margin-right: 10px; text-decoration: none; }
-        .btn { background: #10b981; color: white; padding: 8px 14px; border: none; border-radius: 5px; cursor: pointer; }
-        .form { margin-bottom: 20px; background: white; padding: 20px; border-radius: 8px; }
-        input[type="text"], input[type="email"] { padding: 8px; width: 25%; margin-right: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background: #f9f9f9;
+        }
+        .sidebar {
+            background: #0f172a;
+            color: white;
+            width: 220px;
+            height: 100vh;
+            position: fixed;
+            padding: 20px 10px;
+        }
+        .sidebar h2 {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        .sidebar a {
+            display: block;
+            padding: 10px;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+        .sidebar a.active, .sidebar a:hover {
+            background-color: #22c55e;
+        }
+        .main {
+            margin-left: 240px;
+            padding: 30px;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        h2 { margin-top: 0; }
+        form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #22c55e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        a.edit, a.delete {
+            margin-right: 10px;
+            color: #22c55e;
+            text-decoration: none;
+        }
+        a.delete { color: red; }
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>Quran Circle</h2>
-        <a href="#">Dashboard</a>
-        <a href="#">Teachers</a>
-        <a href="#">Students</a>
-        <a href="#">Halaqat</a>
-        <a href="#">Reports</a>
-        <a href="#">Notifications</a>
-        <a href="#">Roles</a>
+<div class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="dashboard.php">Dashboard</a>
+    <a class="active" href="teachers.php">Teachers</a>
+    <a href="#">Students</a>
+    <a href="#">Halaqat</a>
+    <a href="#">Reports</a>
+    <a href="#">Notifications</a>
+    <a href="#">Roles</a>
+</div>
+
+<div class="main">
+    <div class="card">
+        <h2><?php echo $editMode ? 'Edit' : 'Add'; ?> Teacher</h2>
+        <form method="POST">
+            <input type="hidden" name="action" value="<?php echo $editMode ? 'update' : 'add'; ?>">
+            <?php if ($editMode): ?>
+                <input type="hidden" name="id" value="<?php echo $editData['id']; ?>">
+            <?php endif; ?>
+            <input type="text" name="full_name" placeholder="Full Name" required value="<?php echo $editMode ? $editData['full_name'] : ''; ?>">
+            <input type="email" name="email" placeholder="Email" required value="<?php echo $editMode ? $editData['email'] : ''; ?>">
+            <input type="text" name="phone" placeholder="Phone" required value="<?php echo $editMode ? $editData['phone'] : ''; ?>">
+            <button type="submit"><?php echo $editMode ? 'Update' : 'Add'; ?> Teacher</button>
+        </form>
     </div>
 
-    <div class="main">
-        <h2>Teachers</h2>
-
-        <!-- نموذج الإضافة أو التعديل -->
-        <form method="POST" class="form">
-            <?php if (isset($_GET['edit'])): 
-                $edit_id = $_GET['edit'];
-                $edit_data = $conn->query("SELECT * FROM teachers WHERE id=$edit_id")->fetch_assoc();
-            ?>
-                <input type="hidden" name="id" value="<?= $edit_data['id'] ?>">
-                <input type="text" name="name" value="<?= $edit_data['name'] ?>" required>
-                <input type="text" name="phone" value="<?= $edit_data['phone'] ?>" required>
-                <input type="email" name="email" value="<?= $edit_data['email'] ?>" required>
-                <button class="btn" type="submit" name="edit_teacher">Update</button>
-            <?php else: ?>
-                <input type="text" name="name" placeholder="Full Name" required>
-                <input type="text" name="phone" placeholder="Phone" required>
-                <input type="email" name="email" placeholder="Email" required>
-                <button class="btn" type="submit" name="add_teacher">Add Teacher</button>
-            <?php endif; ?>
-        </form>
-
-        <!-- جدول المعلمين -->
+    <div class="card">
+        <h2>All Teachers</h2>
         <table>
-            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Actions</th>
+            </tr>
+            <?php while ($row = mysqli_fetch_assoc($teachers)): ?>
                 <tr>
-                    <th>Name</th><th>Phone</th><th>Email</th><th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = $result->fetch_assoc()): ?>
-                <tr>
-                    <td><?= $row['name'] ?></td>
-                    <td><?= $row['phone'] ?></td>
-                    <td><?= $row['email'] ?></td>
-                    <td class="actions">
-                        <a href="?edit=<?= $row['id'] ?>">✏️</a>
-                        <a href="?delete=<?= $row['id'] ?>" onclick="return confirm('Delete this teacher?')">🗑️</a>
+                    <td><?php echo htmlspecialchars($row['full_name']); ?></td>
+                    <td><?php echo htmlspecialchars($row['email']); ?></td>
+                    <td><?php echo htmlspecialchars($row['phone']); ?></td>
+                    <td>
+                        <a class="edit" href="?edit=<?php echo $row['id']; ?>">Edit</a>
+                        <a class="delete" href="?delete=<?php echo $row['id']; ?>" onclick="return confirm('Delete this teacher?');">Delete</a>
                     </td>
                 </tr>
-                <?php endwhile; ?>
-            </tbody>
+            <?php endwhile; ?>
         </table>
     </div>
+</div>
 </body>
 </html>
