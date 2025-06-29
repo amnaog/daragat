@@ -48,7 +48,7 @@ while ($row = mysqli_fetch_assoc($result)) {
       <li><a href="index.php">Dashboard</a></li>
       <li><a href="students.php">Students</a></li>
       <li><a href="progress.php" class="active">Progress</a></li>
-      <li><a href="messages.php">Messages <span class="badge">3</span></a></li>
+      <li><a href="messages.php">Messages</a></li>
     </ul>
     <div class="user-info">
       <div class="avatar"></div>

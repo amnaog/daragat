@@ -56,7 +56,7 @@ if ($selected_halaqa_id) {
                 <li class="active"><a href="index.php">Dashboard</a></li>
                 <li><a href="students.php">Students</a></li>
                 <li><a href="progress.php">Progress</a></li>
-                <li><a href="messages.php">Messages <span class="badge">3</span></a></li>
+                <li><a href="messages.php">Messages</a></li>
             </ul>
         </div>
         <div class="user-info">

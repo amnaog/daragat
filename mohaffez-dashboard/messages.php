@@ -57,7 +57,7 @@ $students_result = mysqli_stmt_get_result($stmt);
       <li><a href="index.php">Dashboard</a></li>
       <li><a href="students.php">Students</a></li>
       <li><a href="progress.php">Progress</a></li>
-      <li class="active"><a href="messages.php">Messages <span class="badge">3</span></a></li>
+      <li class="active"><a href="messages.php">Messages</a></li>
     </ul>
     <div class="user-info">
       <div class="avatar"></div>

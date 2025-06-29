@@ -42,7 +42,7 @@ if ($result && mysqli_num_rows($result) > 0) {
       <li><a href="index.php">Dashboard</a></li>
       <li><a href="students.php" class="active">Students</a></li>
       <li><a href="progress.php">Progress</a></li>
-      <li><a href="messages.php">Messages <span class="badge">3</span></a></li>
+      <li><a href="messages.php">Messages</a></li>
     </ul>
     <div class="user-info">
       <div class="avatar"></div>
