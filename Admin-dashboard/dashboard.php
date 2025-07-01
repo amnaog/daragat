@@ -60,7 +60,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             margin-bottom: 10px;
         }
         .sidebar a.active, .sidebar a:hover {
-            background-color: #22c55e;
+            background-color: #1e293b;
         }
         .main {
             margin-left: 240px;

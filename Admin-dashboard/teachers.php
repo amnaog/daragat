@@ -76,7 +76,7 @@ if (isset($_GET['edit'])) {
             margin-bottom: 10px;
         }
         .sidebar a.active, .sidebar a:hover {
-            background-color: #22c55e;
+            background-color: #1e293b;
         }
         .main {
             margin-left: 240px;

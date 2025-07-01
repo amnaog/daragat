@@ -64,7 +64,7 @@ $notifications = fetchNotifications($conn);
     .notification small { color: gray; }
     hr { border: none; border-top: 1px solid #eee; margin: 10px 0; }
     .btn { background: #22c55e; color: white; padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; }
-    .btn:hover { background: #16a34a; }
+    .btn:hover { background: #1e293b; }
     form { display: flex; gap: 10px; margin-bottom: 20px; }
     input[type=text], select { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #ccc; }
   </style>
