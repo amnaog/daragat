@@ -49,8 +49,6 @@ $roles = $result->fetch_all(MYSQLI_ASSOC);
         <a href="students.php">Students</a>
         <a href="halaqat.php">Halaqat</a>
         <a href="Reports.php">Reports</a>
-        <a href="Notifications.php">Notifications</a>
-        <a href="Roles.php">Roles</a>
     </div>
 
     <div class="main">
