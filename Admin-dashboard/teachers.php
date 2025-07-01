@@ -130,11 +130,11 @@ if (isset($_GET['edit'])) {
     <h2>Admin Panel</h2>
     <a href="dashboard.php">Dashboard</a>
     <a class="active" href="teachers.php">Teachers</a>
-    <a href="#">Students</a>
-    <a href="#">Halaqat</a>
-    <a href="#">Reports</a>
-    <a href="#">Notifications</a>
-    <a href="#">Roles</a>
+    <a href="students.php">Students</a>
+    <a href="halaqat.php">Halaqat</a>
+    <a href="reports.php">Reports</a>
+    <a href="notifications.php">Notifications</a>
+    <a href="roles.php">Roles</a>
 </div>
 
 <div class="main">

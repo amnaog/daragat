@@ -82,10 +82,10 @@ if (isset($_GET['edit'])) {
     <a href="dashboard.php">Dashboard</a>
     <a href="teachers.php">Teachers</a>
     <a class="active" href="students.php">Students</a>
-    <a href="#">Halaqat</a>
-    <a href="#">Reports</a>
-    <a href="#">Notifications</a>
-    <a href="#">Roles</a>
+    <a href="halaqat.php">Halaqat</a>
+    <a href="reports.php">Reports</a>
+    <a href="notifications.php">Notifications</a>
+    <a href="roles.php">Roles</a>
 </div>
 
 <div class="main">

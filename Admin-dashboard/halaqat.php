@@ -79,9 +79,9 @@ if (isset($_GET['edit'])) {
     <a href="teachers.php">Teachers</a>
     <a href="students.php">Students</a>
     <a class="active" href="halaqat.php">Halaqat</a>
-    <a href="#">Reports</a>
-    <a href="#">Notifications</a>
-    <a href="#">Roles</a>
+    <a href="reports.php">Reports</a>
+    <a href="notifications.php">Notifications</a>
+    <a href="roles.php">Roles</a>
 </div>
 
 <div class="main">

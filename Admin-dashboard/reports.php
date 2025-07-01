@@ -47,8 +47,8 @@ foreach ($days as $day) {
   <a href="students.php">Students</a>
   <a href="halaqat.php">Halaqat</a>
   <a class="active" href="reports.php">Reports</a>
-  <a href="notifications.php">Notifications</a>
-  <a href="roles.php">Roles</a>
+    <a href="notifications.php">Notifications</a>
+    <a href="roles.php">Roles</a>
 </div>
 
 <div class="main">

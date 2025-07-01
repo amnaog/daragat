@@ -118,12 +118,12 @@ while ($row = mysqli_fetch_assoc($result)) {
 <div class="sidebar">
     <h2>Admin Panel</h2>
     <a class="active" href="#">Dashboard</a>
-    <a href="#">Teachers</a>
-    <a href="#">Students</a>
-    <a href="#">Halaqat</a>
-    <a href="#">Reports</a>
-    <a href="#">Notifications</a>
-    <a href="#">Roles</a>
+    <a href="teachers">Teachers</a>
+    <a href="students.php">Students</a>
+    <a href="halaqat.php">Halaqat</a>
+    <a href="reports.php">Reports</a>
+    <a href="notifications.php">Notifications</a>
+    <a href="roles.php">Roles</a>
 </div>
 
 <div class="main">

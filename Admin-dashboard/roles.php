@@ -44,13 +44,13 @@ $roles = $result->fetch_all(MYSQLI_ASSOC);
 <body>
     <div class="sidebar">
         <h2>Quran Circle</h2>
-        <a href="#">Dashboard</a>
-        <a href="#">Teachers</a>
-        <a href="#">Students</a>
-        <a href="#">Halaqat</a>
-        <a href="#">Reports</a>
-        <a href="#">Notifications</a>
-        <a href="#">Roles</a>
+        <a href="dashboard.php">Dashboard</a>
+        <a href="teachers.php">Teachers</a>
+        <a href="students.php">Students</a>
+        <a href="halaqat.php">Halaqat</a>
+        <a href="Reports.php">Reports</a>
+        <a href="Notifications.php">Notifications</a>
+        <a href="Roles.php">Roles</a>
     </div>
 
     <div class="main">

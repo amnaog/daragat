@@ -73,13 +73,13 @@ $notifications = fetchNotifications($conn);
   <div class="sidebar">
     <h2>Admin Panel</h2>
     <ul>
-      <li><a href="#">Dashboard</a></li>
-      <li><a href="#">Teachers</a></li>
-      <li><a href="#">Students</a></li>
-      <li><a href="#">Halaqat</a></li>
-      <li><a href="#">Reports</a></li>
+      <li><a href="dashboard.php">Dashboard</a></li>
+      <li><a href="teachers.php">Teachers</a></li>
+      <li><a href="students.php">Students</a></li>
+      <li><a href="halaqat.php">Halaqat</a></li>
+      <li><a href="Reports.php">Reports</a></li>
       <li><a href="notifications.php">Notifications</a></li>
-      <li><a href="#">Roles</a></li>
+      <li><a href="roles.php">Roles</a></li>
     </ul>
   </div>
 
