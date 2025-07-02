@@ -149,11 +149,12 @@ while ($row = mysqli_fetch_assoc($result)) {
     <div class="flex-row">
         <div class="card quick-actions">
             <h3>Quick Actions</h3>
-            <a href="add_teacher.php">➕ Add Teacher</a>
-            <a href="add_student.php">👤 Add Student</a>
-            <a href="add_circle.php">☰ Add Circle</a>
+            <a href="teachers.php">➕ Add Teacher</a>
+            <a href="students.php">👤 Add Student</a>
+            <a href="halaqat.php">☰ Add Halaqa</a>
         </div>
         <div class="card">
+            
             <h3>Recent Activity</h3>
             <canvas id="progressChart" height="140"></canvas>
         </div>

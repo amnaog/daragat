@@ -1,3 +1,13 @@
+<?php
+$error = isset($_GET['error']) ? $_GET['error'] : '';
+session_start();
+if (isset($_SESSION['role'])) {
+  // Optional: redirect logged-in user
+  header("Location: index.php?error=1");
+  exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +48,7 @@
     .error {
       color: red;
       font-size: 0.9rem;
-      display: none;
+      margin: 0.3rem 0;
     }
 
     .forgot {
@@ -65,29 +75,17 @@
 <body>
   <div class="login-container">
     <h2>Login</h2>
-    <form onsubmit="login(event)">
-      <input type="text" id="username" placeholder="Username or Email" required />
-      <input type="password" id="password" placeholder="Password" required />
-      <span id="error" class="error">Invalid username or password.</span>
+    <form action="login.php" method="POST">
+      <input type="text" name="username" placeholder="Username or Email" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <?php if ($error): ?>
+        <div class="error">
+          <?= $error == '1' ? "Invalid username or password." : "Unknown user role." ?>
+        </div>
+      <?php endif; ?>
       <a href="#" class="forgot">Forgot your password?</a>
       <button type="submit">Login</button>
     </form>
   </div>
-
-  <script>
-    function login(event) {
-      event.preventDefault();
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-      const error = document.getElementById("error");
-
-      if (username !== "admin" || password !== "1234") {
-        error.style.display = "block";
-      } else {
-        error.style.display = "none";
-        alert("Login successful!");
-      }
-    }
-  </script>
 </body>
 </html>
