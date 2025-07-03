@@ -58,15 +58,6 @@ body {
 .menu li a.active {
   background-color: #1e293b;
 }
-
-.badge {
-  background-color: #22c55e;
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-size: 11px;
-  margin-left: 6px;
-}
-
 /* USER INFO */
 .user-info {
   background-color: #1e293b;
@@ -75,23 +66,6 @@ body {
   font-size: 13px;
 }
 
-.avatar {
-  width: 36px;
-  height: 36px;
-  background-color: #ccc;
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
-
-.avatar-sm {
-  width: 30px;
-  height: 30px;
-  background-color: #ccc;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 10px;
-  vertical-align: middle;
-}
 
 /* MAIN LAYOUT */
 .main {
@@ -337,7 +311,7 @@ tbody tr {
 }
 
 .send-button:hover {
-  background-color: #16a34a;
+  background-color: #22c55e;
 }
 .edit-form-container {
   background-color: white;
@@ -455,17 +429,6 @@ tbody tr {
   margin-bottom: 20px;
 }
 
-.avatar-large {
-  width: 60px;
-  height: 60px;
-  background-color: #4caf50;
-  border-radius: 50%;
-  color: white;
-  font-size: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 .badge-group {
   display: flex;
@@ -501,7 +464,7 @@ tbody tr {
   grid-column: span 2;
 }
 /* تخصيص للداشبورد */
-body {
+/*body {
   margin: 0;
   font-family: 'Inter', sans-serif;
   background-color: #f8f9fa;
@@ -509,14 +472,7 @@ body {
 
 .sidebar.full-height {
   height: 100vh;
-}
-
-.main {
-  flex: 1;
-  padding: 30px;
-  overflow-y: auto;
-}
-
+}*/
 .header {
   display: flex;
   justify-content: space-between;
@@ -533,7 +489,7 @@ body {
 
 .student-info-card .badge {
   display: inline-block;
-  background: #4caf50;
+  background: #22c55e;
   color: white;
   padding: 5px 10px;
   border-radius: 5px;
@@ -572,12 +528,12 @@ body {
 
 .progress-bar div {
   height: 100%;
-  background: #4caf50;
+  background: #22c55e;
 }
 /* لضبط طول الـ Sidebar */
-.sidebar {
+/*(.sidebar {
   height: 100vh;
-}
+}*/
 
 /* لضبط تنسيق البطاقة داخل الداشبورد */
 .card {
@@ -612,7 +568,7 @@ body {
 }
 .card .progress-bar > div {
   height: 100%;
-  background-color: #3cb371;
+  background-color: #22c55e;
 }
 
 /* ترتيب الشبكة */
@@ -654,4 +610,204 @@ body {
   color: #22c55e;
   text-decoration: none;
   font-size: 14px;
+}
+/* =============================== */
+/* تنسيقات صفحة إضافة تقرير */
+/* =============================== */
+.add-report-container {
+  background: #fff;
+  padding: 20px ;
+  border-radius: 12px;
+  max-width: 500px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.01);
+  margin: 30px auto 0 auto;
+  margin-top: 0;
+  margin-left:  0px; ;
+}
+.add-report-container h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111;
+}
+
+.report-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.report-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2px;
+}
+
+.report-form label {
+  margin-bottom: 4px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.report-form input,
+.report-form select {
+  padding: 8px 10px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.report-form select {
+  appearance: none;
+  background-color: #fff;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-submit {
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  background-color: #e0e0e0;
+  color: #333;
+  padding: 10px 22px;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+body {
+  display: flex;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f7f9fc;
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+.add-report-link {
+    background-color: #22c55e;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.add-report-link:hover {
+    background-color: #22c55e;
+}/*.send-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.send-btn:hover {
+  background-color: #45a049;
+}
+
+.search-box input {
+  padding: 8px;
+  width: 300px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}*/
+/* ✅ تنسيق زر الإرسال */
+.btn-primary {
+    background-color: #22c55e;
+    border: none;
+    padding: 8px 12px;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+}
+.btn-primary:hover {
+    background-color: #22c55e;
+}
+
+/* ✅ شريط التقدم */
+.progress-bar {
+    background-color: #eee;
+    border-radius: 6px;
+    height: 8px;
+    width: 100px;
+    overflow: hidden;
+    display: inline-block;
+    margin-right: 6px;
+}
+.progress-fill {
+    background-color: #22c55e;
+    height: 100%;
+}
+
+/* ✅ تنسيق مربع البحث */
+
+
+.search-header h3 {
+  margin: 0;
+}
+.search-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.all-students-title {
+  margin: 0;
+}
+
+.search-box input {
+  padding: 8px 12px;
+  width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.all-students-title {
+  margin-bottom: 10px;
+}
+
+.search-box-left {
+  margin-bottom: 20px;
+}
+
+.search-box-left input {
+  padding: 8px 12px;
+  width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.styled-table td:last-child {
+  width: 130px;
+  min-width: 130px;
+  text-align: center;
+}
+
+.styled-table td .btn-primary {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
