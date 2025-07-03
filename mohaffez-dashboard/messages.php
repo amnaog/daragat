@@ -54,7 +54,7 @@ $students_result = mysqli_stmt_get_result($stmt);
 <body>
   <div class="sidebar">
     <div>
-        <div class="logo">QuranFlow</div>
+        <div class="logo">📗 QuranFlow</div>
         <ul class="menu">
             <li><a href="index.php">Dashboard</a></li>
             <li><a href="students.php">Students</a></li>
