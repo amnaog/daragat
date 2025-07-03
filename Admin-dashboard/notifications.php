@@ -64,7 +64,7 @@ $notifications = fetchNotifications($conn);
     .notification small { color: gray; }
     hr { border: none; border-top: 1px solid #eee; margin: 10px 0; }
     .btn { background: #22c55e; color: white; padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; }
-    .btn:hover { background: #16a34a; }
+    .btn:hover { background: #1e293b; }
     form { display: flex; gap: 10px; margin-bottom: 20px; }
     input[type=text], select { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #ccc; }
   </style>
@@ -73,13 +73,13 @@ $notifications = fetchNotifications($conn);
   <div class="sidebar">
     <h2>Admin Panel</h2>
     <ul>
-      <li><a href="#">Dashboard</a></li>
-      <li><a href="#">Teachers</a></li>
-      <li><a href="#">Students</a></li>
-      <li><a href="#">Halaqat</a></li>
-      <li><a href="#">Reports</a></li>
+      <li><a href="dashboard.php">Dashboard</a></li>
+      <li><a href="teachers.php">Teachers</a></li>
+      <li><a href="students.php">Students</a></li>
+      <li><a href="halaqat.php">Halaqat</a></li>
+      <li><a href="Reports.php">Reports</a></li>
       <li><a href="notifications.php">Notifications</a></li>
-      <li><a href="#">Roles</a></li>
+      <li><a href="roles.php">Roles</a></li>
     </ul>
   </div>
 

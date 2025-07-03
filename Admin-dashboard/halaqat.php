@@ -54,7 +54,7 @@ if (isset($_GET['edit'])) {
         }
         .sidebar h2 { font-size: 18px; margin-bottom: 30px; }
         .sidebar a { display: block; padding: 10px; color: white; text-decoration: none; border-radius: 6px; margin-bottom: 10px; }
-        .sidebar a.active, .sidebar a:hover { background-color: #22c55e; }
+        .sidebar a.active, .sidebar a:hover { background-color: #1e293b; }
         .main { margin-left: 240px; padding: 30px; }
         .card {
             background: white; border-radius: 10px; padding: 20px; margin-bottom: 20px;
@@ -79,9 +79,7 @@ if (isset($_GET['edit'])) {
     <a href="teachers.php">Teachers</a>
     <a href="students.php">Students</a>
     <a class="active" href="halaqat.php">Halaqat</a>
-    <a href="#">Reports</a>
-    <a href="#">Notifications</a>
-    <a href="#">Roles</a>
+    <a href="reports.php">Reports</a>
 </div>
 
 <div class="main">

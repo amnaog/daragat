@@ -76,7 +76,7 @@ if (isset($_GET['edit'])) {
             margin-bottom: 10px;
         }
         .sidebar a.active, .sidebar a:hover {
-            background-color: #22c55e;
+            background-color: #1e293b;
         }
         .main {
             margin-left: 240px;
@@ -130,11 +130,9 @@ if (isset($_GET['edit'])) {
     <h2>Admin Panel</h2>
     <a href="dashboard.php">Dashboard</a>
     <a class="active" href="teachers.php">Teachers</a>
-    <a href="#">Students</a>
-    <a href="#">Halaqat</a>
-    <a href="#">Reports</a>
-    <a href="#">Notifications</a>
-    <a href="#">Roles</a>
+    <a href="students.php">Students</a>
+    <a href="halaqat.php">Halaqat</a>
+    <a href="reports.php">Reports</a>
 </div>
 
 <div class="main">
