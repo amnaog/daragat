@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'db.php';
+$preselected_student_id = intval($_GET['student_id'] ?? 0);
 
 // التحقق من تسجيل الدخول
 $teacher_id = $_SESSION['teacher_id'] = 1;
@@ -16,11 +17,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message = $_POST['message'];
     $created_at = date('Y-m-d H:i:s');
 
-    $query = "INSERT INTO notifications (student_id, message, created_at) VALUES (?, ?, ?)";
+   $query = "INSERT INTO messages (student_id, teacher_id, content, sent_at, is_read) 
+          VALUES (?, ?, ?, ?, 0)";
     $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, 'iss', $student_id, $message, $created_at);
+    mysqli_stmt_bind_param($stmt, 'iiss', $student_id, $teacher_id, $message, $created_at);
     mysqli_stmt_execute($stmt);
-
     if (mysqli_stmt_affected_rows($stmt) > 0) {
         $success = "Message sent successfully.";
     } else {
@@ -52,19 +53,20 @@ $students_result = mysqli_stmt_get_result($stmt);
 </head>
 <body>
   <div class="sidebar">
-    <h2 class="logo">QuranFlow</h2>
-    <ul class="menu">
-      <li><a href="index.php">Dashboard</a></li>
-      <li><a href="students.php">Students</a></li>
-      <li><a href="progress.php">Progress</a></li>
-      <li class="active"><a href="messages.php">Messages</a></li>
-    </ul>
-    <div class="user-info">
-      <div class="avatar"></div>
-      <div class="email">Sheikh Abdullah<br><small>sheikh.abdullah@quran.com</small></div>
+    <div>
+        <div class="logo">📗 QuranFlow</div>
+        <ul class="menu">
+            <li><a href="index.php">Dashboard</a></li>
+            <li><a href="students.php">Students</a></li>
+            <li><a href="progress.php">Progress</a></li>
+            <li><a href="messages.php"class="active">Messages</a></li>
+        </ul>
     </div>
-  </div>
-
+    <div class="user-info"><div class="avatar"></div>
+        <div>Sheikh Abdullah</div>
+        <div style="font-size: 12px;">sheikh.abdullah@quran.com</div>
+    </div>
+</div>
   <div class="main">
     <header><h2>New Message</h2></header>
     <p>Send a message to one of your students.</p>
@@ -77,7 +79,9 @@ $students_result = mysqli_stmt_get_result($stmt);
       <select name="student_id" required>
         <option value="">Select a student</option>
         <?php while ($student = mysqli_fetch_assoc($students_result)): ?>
-          <option value="<?php echo $student['id']; ?>"><?php echo htmlspecialchars($student['full_name']); ?></option>
+         <option value="<?php echo $student['id']; ?>" <?php if ($student['id'] == $preselected_student_id) echo 'selected'; ?>>
+       <?php echo htmlspecialchars($student['full_name']); ?>
+        </option>
         <?php endwhile; ?>
       </select>
 
