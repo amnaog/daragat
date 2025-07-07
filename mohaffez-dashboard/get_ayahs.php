@@ -1,4 +1,10 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
+    header("Location: ../login.php");
+    exit();
+}
 $host = 'localhost';
 $user = 'root';
 $password = '';

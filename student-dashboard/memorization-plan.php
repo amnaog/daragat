@@ -1,4 +1,10 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {
+    header("Location: ../login.php");
+    exit();
+}
 // الاتصال بقاعدة البيانات
 $conn = mysqli_connect("localhost", "root", "", "darajat");
 if (!$conn) {
@@ -6,7 +12,7 @@ if (!$conn) {
 }
 
 // نحدد معرف الطالب (هنا ثابت مؤقتًا، تقدر لاحقًا تجيبه من session)
-$student_id = 1;
+$student_id = $_SESSION['student_id'];
 
 // لو الطالب حدّث هدفه
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

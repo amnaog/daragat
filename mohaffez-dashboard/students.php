@@ -1,8 +1,13 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
+    header("Location: ../login.php");
+    exit();
+}
 include 'db.php';
 
-$teacher_id = $_SESSION['teacher_id'] = 1;
+$teacher_id = $_SESSION['teacher_id'];
 
 // ✅ جلب الطلاب المرتبطين بالمحفظ مع حساب التقدم وآخر حفظ
 $query = "
@@ -60,13 +65,11 @@ $students = $result->fetch_all(MYSQLI_ASSOC);
         <ul class="menu">
             <li><a href="index.php">Dashboard</a></li>
             <li><a href="students.php" class="active">Students</a></li>
-            <li><a href="progress.php">Progress</a></li>
             <li><a href="messages.php">Messages</a></li>
         </ul>
     </div>
     <div class="user-info"><div class="avatar"></div>
-        <div>Sheikh Abdullah</div>
-        <div style="font-size: 12px;">sheikh.abdullah@quran.com</div>
+        <div>Sheikh <?php echo htmlspecialchars($_SESSION['username']); ?></div>
     </div>
 </div>
 

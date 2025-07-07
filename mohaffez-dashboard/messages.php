@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
+    header("Location: ../login.php");
+    exit();
+}
 include 'db.php';
 $preselected_student_id = intval($_GET['student_id'] ?? 0);
 
@@ -58,13 +63,11 @@ $students_result = mysqli_stmt_get_result($stmt);
         <ul class="menu">
             <li><a href="index.php">Dashboard</a></li>
             <li><a href="students.php">Students</a></li>
-            <li><a href="progress.php">Progress</a></li>
             <li><a href="messages.php"class="active">Messages</a></li>
         </ul>
     </div>
     <div class="user-info"><div class="avatar"></div>
-        <div>Sheikh Abdullah</div>
-        <div style="font-size: 12px;">sheikh.abdullah@quran.com</div>
+         <div>Sheikh <?php echo htmlspecialchars($_SESSION['username']); ?></div>
     </div>
 </div>
   <div class="main">
