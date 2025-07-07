@@ -1,7 +1,13 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {
+    header("Location: ../login.php");
+    exit();
+}
 include 'db.php';
 
-$student_id = 1; // مؤقتًا إلى أن يتم ربط login
+$student_id = $_SESSION['student_id'];
 
 // جلب بيانات الطالب
 $stmt = $conn->prepare("SELECT s.full_name, s.email, h.name AS halaqa_name FROM students s 

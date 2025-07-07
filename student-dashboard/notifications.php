@@ -1,13 +1,17 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {
+    header("Location: ../login.php");
+    exit();
+}
 // اتصال بقاعدة البيانات
 $conn = mysqli_connect("localhost", "root", "", "darajat");
 if (!$conn) {
   die("Connection failed: " . mysqli_connect_error());
 }
 
-// مؤقتًا: تحديد الطالب id = 1
-$student_id = 1;
-
+$student_id = $_SESSION['student_id'];
 // جلب الرسائل
 $sql = "SELECT m.*, t.full_name 
         FROM messages m

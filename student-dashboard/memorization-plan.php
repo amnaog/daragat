@@ -1,4 +1,10 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {
+    header("Location: ../login.php");
+    exit();
+}
 // الاتصال بقاعدة البيانات
 $conn = mysqli_connect("localhost", "root", "", "darajat");
 if (!$conn) {
@@ -6,7 +12,7 @@ if (!$conn) {
 }
 
 // نحدد معرف الطالب (هنا ثابت مؤقتًا، تقدر لاحقًا تجيبه من session)
-$student_id = 1;
+$student_id = $_SESSION['student_id'];
 
 // لو الطالب حدّث هدفه
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -60,7 +66,6 @@ $completion_date = $days_needed > 0 ? date('Y-m-d', strtotime("+$days_needed day
     <input type="number" name="daily_goal" value="<?= $daily_goal ?>" placeholder="Daily Verses Target" required>
     <button type="submit">Update Targets</button>
 </form>
-
 <div class="summary-cards">
     <div class="card success">
         <h3>Estimated Completion</h3>

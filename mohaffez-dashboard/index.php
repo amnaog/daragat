@@ -1,4 +1,10 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
+    header("Location: ../login.php");
+    exit();
+}
 $host = 'localhost';
 $user = 'root';
 $password = '';
@@ -90,8 +96,6 @@ function getHalaqaName($conn, $id) {
         .add-report-link:hover {
             background-color: #45a049;
         }
-
-        /* بحث ديناميكي */
         #studentsTable tbody tr {
             display: table-row;
         }
@@ -122,13 +126,11 @@ function getHalaqaName($conn, $id) {
         <ul class="menu">
             <li><a href="index.php" class="active">Dashboard</a></li>
             <li><a href="students.php">Students</a></li>
-            <li><a href="progress.php">Progress</a></li>
             <li><a href="messages.php">Messages</a></li>
         </ul>
     </div>
     <div class="user-info"><div class="avatar"></div>
-        <div>Sheikh Abdullah</div>
-        <div style="font-size: 12px;">sheikh.abdullah@quran.com</div>
+         <div>Sheikh <?php echo htmlspecialchars($_SESSION['username']); ?></div>
     </div>
 </div>
 
