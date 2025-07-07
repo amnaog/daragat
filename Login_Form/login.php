@@ -1,135 +1,76 @@
 <?php
 session_start();
+$conn = new mysqli("localhost", "root", "", "darajat");
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-$email = $password = "";
-$error_msg = "";
+$username = $_POST['username'] ?? '';
+$password = $_POST['password'] ?? '';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
+// جلب بيانات المستخدم من جدول users مع الدور
+$stmt = $conn->prepare("
+    SELECT u.id, u.username, u.email, u.password, r.name AS role
+    FROM users u
+    JOIN roles r ON u.role_id = r.id
+    WHERE u.username = ? OR u.email = ?
+");
+$stmt->bind_param("ss", $username, $username);
+$stmt->execute();
+$result = $stmt->get_result();
 
-    if (empty($email) || empty($password)) {
-        $error_msg = "Please enter both email and password.";
-    } else {
-        $conn = new mysqli("localhost", "root", "", "darajat");
-        if ($conn->connect_error) {
-            $error_msg = "Database connection failed.";
-        } else {
-            $stmt = $conn->prepare("SELECT password, role FROM users WHERE email = ?");
-            if ($stmt) {
-                $stmt->bind_param("s", $email);
-                $stmt->execute();
-                $stmt->store_result();
+if ($row = $result->fetch_assoc()) {
+    if ($password === $row['password']) {
+        $_SESSION['user_id'] = $row['id'];
+        $_SESSION['username'] = $row['username'];
+        $_SESSION['role'] = $row['role'];
 
-                if ($stmt->num_rows === 1) {
-                    $stmt->bind_result($hashed_password, $role);
-                    $stmt->fetch();
+        $email = $row['email'];
 
-                    // تحقق من كلمة المرور باستخدام password_verify
-                    if (password_verify($password, $hashed_password)) {
-                        $_SESSION['user_email'] = $email;
-                        $_SESSION['user_role'] = $role;
-                        $_SESSION['logged_in'] = true;
-
-                        $redirects = [
-                            'admin' => '../Admin-dashboard/dashboard.php',
-                            'teacher' => 'teacher-dashboard.php',
-                            'student' => 'student-dashboard.php',
-                        ];
-
-                        $redirect_url = $redirects[$role] ?? 'default-dashboard.php';
-
-                        echo "<script>
-                            alert('✅ Welcome!');
-                            window.location.href = '$redirect_url';
-                        </script>";
-                        exit;
-                    } else {
-                        $error_msg = "Incorrect password.";
-                    }
+        switch ($row['role']) {
+            case 'teacher':
+                $q = $conn->prepare("SELECT id FROM teachers WHERE email = ?");
+                $q->bind_param("s", $email);
+                $q->execute();
+                $res = $q->get_result();
+                if ($r = $res->fetch_assoc()) {
+                    $_SESSION['teacher_id'] = $r['id'];
+                   header("Location: http://localhost/daragat/mohaffez-dashboard/index.php");
+                    exit;
                 } else {
-                    $error_msg = "Email not found.";
+                    die("Teacher not found in teachers table");
                 }
-                $stmt->close();
-            } else {
-                $error_msg = "Database query error.";
-            }
-            $conn->close();
+                break;
+
+            case 'student':
+                $q = $conn->prepare("SELECT id FROM students WHERE email = ?");
+                $q->bind_param("s", $email);
+                $q->execute();
+                $res = $q->get_result();
+                if ($r = $res->fetch_assoc()) {
+                    $_SESSION['student_id'] = $r['id'];
+                     header("Location: http://localhost/daragat/student-dashboard/index.php");
+                    exit;
+                } else {
+                    die("Student not found in students table");
+                }
+                break;
+
+            case 'admin':
+                header("Location: http://localhost/daragat/Admin-dashboard/dashboard.php");
+                exit;
+
+            default:
+                header("Location: index.php?error=invalid_role");
+                exit;
         }
+
+    } else {
+        header("Location: index.php?error=wrong_password");
+        exit;
     }
+} else {
+    header("Location: index.php?error=user_not_found");
+    exit;
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Login</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .form-box {
-      background: white;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #ccc;
-      max-width: 400px;
-      width: 100%;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-    label {
-      display: block;
-      margin-top: 1rem;
-      font-weight: bold;
-    }
-    input, button {
-      width: 100%;
-      padding: 0.6rem;
-      margin-top: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
-    button {
-      margin-top: 1.5rem;
-      background: #2563eb;
-      color: white;
-      border: none;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-
-<div class="form-box">
-  <h2>Login</h2>
-
-  <?php
-  if (!empty($error_msg)) {
-    echo "<script>alert('❌ " . addslashes($error_msg) . "');</script>";
-  }
-  ?>
-
-  <form method="post" action="">
-    <label>Email</label>
-    <input type="email" name="email" value="<?= htmlspecialchars($email) ?>" required />
-
-    <label>Password</label>
-    <input type="password" name="password" required />
-
-    <button type="submit">Login</button>
-  </form>
-</div>
-
-</body>
-</html>
