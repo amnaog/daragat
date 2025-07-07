@@ -92,22 +92,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script>
         // ✅ تحديث قائمة الآيات عند تغيير السورة المختارة
         function updateAyahOptions() {
-            const surahSelect = document.getElementById("surah_id");
-            const fromSelect = document.getElementById("from_ayah");
-            const toSelect = document.getElementById("to_ayah");
-            const maxAyah = surahSelect.options[surahSelect.selectedIndex]?.getAttribute('data-ayah-count') || 0;
+  var surahId = document.getElementById("surah_id").value;
 
-            fromSelect.innerHTML = "";
-            toSelect.innerHTML = "";
+  if (!surahId) {
+    document.getElementById("from_ayah").innerHTML = "";
+    document.getElementById("to_ayah").innerHTML = "";
+    return;
+  }
 
-            for (let i = 1; i <= maxAyah; i++) {
-                const opt1 = new Option(i, i);const opt2 = new Option(i, i);
-                fromSelect.add(opt1);
-                toSelect.add(opt2);
-            }
-        }
+  var xhttp = new XMLHttpRequest();
 
-        document.addEventListener("DOMContentLoaded", updateAyahOptions);
+  xhttp.onreadystatechange = function () {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+      document.getElementById("from_ayah").innerHTML = xhttp.responseText;
+      document.getElementById("to_ayah").innerHTML = xhttp.responseText;
+    }
+  };
+
+  xhttp.open("GET", "get_ayahs.php?surah_id=" + surahId, true);
+  xhttp.send();
+}
+
+document.addEventListener("DOMContentLoaded", updateAyahOptions);
     </script>
 </head>
 <body>

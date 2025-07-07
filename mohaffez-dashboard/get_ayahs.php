@@ -6,25 +6,17 @@ $database = 'darajat';
 
 $conn = new mysqli($host, $user, $password, $database);
 if ($conn->connect_error) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Database connection failed']);
-    exit;
+    die("Connection failed");
 }
-
-header('Content-Type: application/json');
 
 $surah_id = intval($_GET['surah_id'] ?? 0);
-if (!$surah_id) {
-    echo json_encode(['error' => 'Invalid surah ID']);
-    exit;
-}
 
-$sql = "SELECT ayah_count FROM quran_surahs WHERE id = $surah_id";
-$result = $conn->query($sql);
+if ($surah_id > 0) {
+    $result = $conn->query("SELECT ayah_count FROM quran_surahs WHERE id = $surah_id");
+    $row = $result->fetch_assoc();
+    $ayah_count = $row['ayah_count'] ?? 0;
 
-if ($result && $row = $result->fetch_assoc()) {
-    $ayahs = range(1, intval($row['ayah_count']));
-    echo json_encode(['ayahs' => $ayahs]);
-} else {
-    echo json_encode(['error' => 'Surah not found']);
+    for ($i = 1; $i <= $ayah_count; $i++) {
+        echo "<option value='$i'>$i</option>";
+    }
 }

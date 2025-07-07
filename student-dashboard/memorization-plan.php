@@ -60,7 +60,6 @@ $completion_date = $days_needed > 0 ? date('Y-m-d', strtotime("+$days_needed day
     <input type="number" name="daily_goal" value="<?= $daily_goal ?>" placeholder="Daily Verses Target" required>
     <button type="submit">Update Targets</button>
 </form>
-
 <div class="summary-cards">
     <div class="card success">
         <h3>Estimated Completion</h3>

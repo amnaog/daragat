@@ -90,8 +90,6 @@ function getHalaqaName($conn, $id) {
         .add-report-link:hover {
             background-color: #45a049;
         }
-
-        /* بحث ديناميكي */
         #studentsTable tbody tr {
             display: table-row;
         }
