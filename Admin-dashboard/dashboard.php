@@ -1,6 +1,18 @@
 <?php
 include 'db.php';
 
+session_start();
+
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    header("Location: ../login.php");
+    exit();
+}
+
+$conn = new mysqli('localhost', 'root', '', 'darajat');
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
 // fetch counts
 $studentsCount = mysqli_fetch_row(mysqli_query($conn, "SELECT COUNT(*) FROM students"))[0];
 $teachersCount = mysqli_fetch_row(mysqli_query($conn, "SELECT COUNT(*) FROM teachers"))[0];
@@ -27,7 +39,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Quran Circle Nexus - Dashboard</title>
+    <title>Quran Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -112,13 +124,12 @@ while ($row = mysqli_fetch_assoc($result)) {
 </head>
 <body>
 <div class="sidebar">
-    <h2>Admin Panel</h2>
+    <h2> 📗 QuranFlow</h2>
     <a class="active" href="#">Dashboard</a>
     <a href="teachers.php">Teachers</a>
     <a href="students.php">Students</a>
     <a href="halaqat.php">Halaqat</a>
-    <a href="reports.php">Requests</a>
-    <a href="logout.php">Log out</a>
+    <a href="Requests.php">Requests</a>
 </div>
 
 <div class="main">
@@ -155,16 +166,6 @@ while ($row = mysqli_fetch_assoc($result)) {
             <h3>Recent Activity</h3>
             <canvas id="progressChart" height="140"></canvas>
         </div>
-        <div class="card">
-            <h3>Notifications</h3>
-            <ul class="notifications">
-                <?php foreach ($notifications as $note): ?>
-                    <li><?php echo htmlspecialchars($note['message']); ?>
-                        <span style="color:gray;font-size:12px;"> - <?php echo date("M j, H:i", strtotime($note['created_at'])); ?></span>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
     </div>
 </div>
 <script>
@@ -189,6 +190,9 @@ const chart = new Chart(ctx, {
         plugins: {
             legend: {
                 display: false
+            },
+            tooltip: {
+                enabled: false
             }
         },
         scales: {
@@ -200,5 +204,6 @@ const chart = new Chart(ctx, {
     }
 });
 </script>
+
 </body>
 </html>

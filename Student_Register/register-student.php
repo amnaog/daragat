@@ -23,7 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error_msg = "Database connection failed.";
         } else {
             // تحقق إذا كان الإيميل موجود مسبقاً (تجنب التكرار)
-            $checkStmt = $conn->prepare("SELECT id FROM students WHERE email = ?");
+            $checkStmt = $conn->prepare("SELECT id FROM student_requests WHERE email = ?");
+
             $checkStmt->bind_param("s", $email);
             $checkStmt->execute();
             $checkStmt->store_result();
@@ -31,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error_msg = "This email is already registered.";
             } else {
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $stmt = $conn->prepare("INSERT INTO students (full_name, email, phone, password, level) VALUES (?, ?, ?, ?, ?)");
+                $stmt = $conn->prepare("INSERT INTO student_requests (full_name, email, phone, password, level) VALUES (?, ?, ?, ?, ?)");
                 $stmt->bind_param("sssss", $full_name, $email, $phone, $hashed_password, $level);
                 if ($stmt->execute()) {
                     // التسجيل ناجح -> إعادة التوجيه مع رسالة ناجحة (يمكن تعديل الرابط)
