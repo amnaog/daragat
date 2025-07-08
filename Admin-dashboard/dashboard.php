@@ -6,6 +6,7 @@ $studentsCount = mysqli_fetch_row(mysqli_query($conn, "SELECT COUNT(*) FROM stud
 $teachersCount = mysqli_fetch_row(mysqli_query($conn, "SELECT COUNT(*) FROM teachers"))[0];
 $halaqatCount = mysqli_fetch_row(mysqli_query($conn, "SELECT COUNT(*) FROM halaqat"))[0];
 
+
 // generate students activity based on actual creation dates
 $studentsPerDay = [];
 $weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
@@ -154,7 +155,16 @@ while ($row = mysqli_fetch_assoc($result)) {
             <h3>Recent Activity</h3>
             <canvas id="progressChart" height="140"></canvas>
         </div>
-       
+        <div class="card">
+            <h3>Notifications</h3>
+            <ul class="notifications">
+                <?php foreach ($notifications as $note): ?>
+                    <li><?php echo htmlspecialchars($note['message']); ?>
+                        <span style="color:gray;font-size:12px;"> - <?php echo date("M j, H:i", strtotime($note['created_at'])); ?></span>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
     </div>
 </div>
 <script>
