@@ -9,12 +9,7 @@ include 'db.php';
 $preselected_student_id = intval($_GET['student_id'] ?? 0);
 
 // التحقق من تسجيل الدخول
-$teacher_id = $_SESSION['teacher_id'] = 1;
-/*$teacher_id = $_SESSION['teacher_id'] ?? null;
-if (!$teacher_id) {
-    header("Location: login.php");
-    exit;
-}*/
+$teacher_id = $_SESSION['teacher_id'];
 
 // عند إرسال النموذج
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

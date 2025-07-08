@@ -96,15 +96,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Add Memorization Report</title>
     <link rel="stylesheet" href="styles.css">
     <script>
-        // ✅ تحديث قائمة الآيات عند تغيير السورة المختارة
-        function updateAyahOptions() {
-  var surahId = document.getElementById("surah_id").value;
+        // تحديث قائمة الآيات عند تغيير السورة المختارة
+//         function updateAyahOptions() {
+//   var surahId = document.getElementById("surah_id").value;
 
-  if (!surahId) {
-    document.getElementById("from_ayah").innerHTML = "";
-    document.getElementById("to_ayah").innerHTML = "";
-    return;
-  }
+//   if (!surahId) {
+//     document.getElementById("from_ayah").innerHTML = "";
+//     document.getElementById("to_ayah").innerHTML = "";
+//     return;
+//   }
 
   var xhttp = new XMLHttpRequest();
 
@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", updateAyahOptions);
     </script>
 </head>
 <body>
-<!-- ✅ الشريط الجانبي بنفس تنسيق باقي الصفحات -->
+
 <div class="sidebar">
     <div>
         <div class="logo">QuranFlow</div>
@@ -139,17 +139,17 @@ document.addEventListener("DOMContentLoaded", updateAyahOptions);
     </div>
 </div>
 
-<!-- ✅ محتوى الصفحة الرئيسية -->
+<!--  محتوى الصفحة الرئيسية -->
 <div class="main">
     <div class="add-report-container">
         <h2>Add Memorization Report for Student: <?= htmlspecialchars($student_name) ?></h2>
 
-        <!-- ✅ عرض رسائل الخطأ بشكل جميل داخل الصفحة -->
+    
         <?php if ($error_message): ?>
             <div class="error-box"><?= $error_message ?></div>
         <?php endif; ?>
 
-        <!-- ✅ نموذج إدخال التقرير -->
+        <!-- نموذج إدخال التقرير -->
         <form method="post" class="report-form">
             <div class="form-group">
                 <label for="created_at">Date:</label>

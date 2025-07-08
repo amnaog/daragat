@@ -9,7 +9,7 @@ include 'db.php';
 
 $teacher_id = $_SESSION['teacher_id'];
 
-// ✅ جلب الطلاب المرتبطين بالمحفظ مع حساب التقدم وآخر حفظ
+//  جلب الطلاب المرتبطين بالمحفظ مع حساب التقدم وآخر حفظ
 $query = "
     SELECT 
         students.id, 
@@ -46,7 +46,7 @@ $students = $result->fetch_all(MYSQLI_ASSOC);
   <title>Students - QuranFlow</title>
   <link rel="stylesheet" href="styles.css" />
   <script>
-    // ✅ البحث الديناميكي حسب الاسم أو اسم الحلقة
+    //  البحث الديناميكي حسب الاسم أو اسم الحلقة
     function searchStudents() {
       const input = document.getElementById("searchInput").value.toLowerCase();
       const rows = document.querySelectorAll(".student-row");
@@ -76,7 +76,7 @@ $students = $result->fetch_all(MYSQLI_ASSOC);
   <div class="main">
     <h2>Students</h2>
 
-    <!-- ✅ مربع البحث بجانب العنوان -->
+    <!--  مربع البحث بجانب العنوان -->
     <h3 class="all-students-title">All Students</h3>
 <div class="search-box-left">
   <input type="text" id="searchInput" onkeyup="searchStudents()" placeholder="Search by name or halaqa...">

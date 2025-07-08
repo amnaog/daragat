@@ -52,10 +52,6 @@ $stmt->execute();
 $streak = $stmt->get_result()->fetch_assoc()['streak'];
 $streak_percent = round(($streak / 30) * 100, 1);
 
-// الهدف الشهري (ثابت مؤقتًا)
-$monthly_goal = 200;
-$monthly_achieved = 145;
-$monthly_percent = round(($monthly_achieved / $monthly_goal) * 100, 1);
 ?>
 
 <!DOCTYPE html>
