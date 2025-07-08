@@ -11,7 +11,7 @@ if (!$conn) {
     die("Database connection failed: " . mysqli_connect_error());
 }
 
-// نحدد معرف الطالب (هنا ثابت مؤقتًا، تقدر لاحقًا تجيبه من session)
+
 $student_id = $_SESSION['student_id'];
 
 // لو الطالب حدّث هدفه
@@ -19,9 +19,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $daily_goal = (int)$_POST['daily_goal'];
     $monthly_goal = $daily_goal * 30;
 
-    // تحديث الهدف
-    $sql = "UPDATE student_goals SET daily_goal = $daily_goal, monthly_goal = $monthly_goal WHERE student_id = $student_id";
+    // تحقق من وجود سجل
+    $checkSql = "SELECT * FROM student_goals WHERE student_id = $student_id";
+    $checkResult = mysqli_query($conn, $checkSql);
+
+    if (mysqli_num_rows($checkResult) > 0) {
+        // سجل موجود، حدث البيانات
+        $sql = "UPDATE student_goals SET daily_goal = $daily_goal, monthly_goal = $monthly_goal WHERE student_id = $student_id";
+    } else {
+        // سجل غير موجود، أضف سجل جديد
+        $sql = "INSERT INTO student_goals (student_id, daily_goal, monthly_goal) VALUES ($student_id, $daily_goal, $monthly_goal)";
+    }
+
     mysqli_query($conn, $sql);
+
+    // // إعادة تحميل الصفحة لعرض البيانات الجديدة
+    // header("Location: memorization-plan.php");
+    // exit();
 }
 
 // جلب آخر هدف لهذا الطالب
