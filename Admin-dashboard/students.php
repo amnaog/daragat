@@ -78,12 +78,12 @@ if (isset($_GET['edit'])) {
 </head>
 <body>
 <div class="sidebar">
-    <h2>Admin Panel</h2>
+    <h2> 📗 QuranFlow</h2>
     <a href="dashboard.php">Dashboard</a>
     <a href="teachers.php">Teachers</a>
     <a class="active" href="students.php">Students</a>
     <a href="halaqat.php">Halaqat</a>
-    <a href="reports.php">Reports</a>
+    <a href="Requests.php">Requests</a>
 </div>
 
 <div class="main">

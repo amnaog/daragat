@@ -36,7 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $error_msg = "Database connection failed.";
                     unlink($destination); // حذف الملف لأن DB فشلت
                 } else {
-                    $stmt = $conn->prepare("INSERT INTO teachers (full_name, email, phone, certificate_path) VALUES (?, ?, ?, ?)");
+                    $stmt = $conn->prepare("INSERT INTO teacher_requests (full_name, email, phone, certificate_path) VALUES (?, ?, ?, ?)");
+
                     $relative_path = 'uploads/certificates/' . $new_filename;
                     $stmt->bind_param("ssss", $full_name, $email, $phone, $relative_path);
 
