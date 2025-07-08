@@ -1,39 +1,52 @@
 <?php
-include 'db.php';
+include 'db.php'; // تضمين ملف الاتصال بقاعدة البيانات
 
-// Handle Add
+// التعامل مع إضافة معلم جديد عند استلام POST مع action = 'add'
 if (isset($_POST['action']) && $_POST['action'] === 'add') {
+    // تأمين البيانات المدخلة من حقول النموذج لتجنب حقن SQL
     $name = mysqli_real_escape_string($conn, $_POST['full_name']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
+    
+    // تنفيذ استعلام الإدخال في جدول المعلمين
     mysqli_query($conn, "INSERT INTO teachers (full_name, email, phone) VALUES ('$name', '$email', '$phone')");
+    
+    // إعادة التوجيه إلى صفحة المعلمين بعد الإضافة
     header("Location: teachers.php");
     exit();
 }
 
-// Handle Update
+// التعامل مع تحديث بيانات معلم موجود عند استلام POST مع action = 'update'
 if (isset($_POST['action']) && $_POST['action'] === 'update') {
-    $id = intval($_POST['id']);
+    $id = intval($_POST['id']); // تحويل معرف المعلم إلى عدد صحيح
     $name = mysqli_real_escape_string($conn, $_POST['full_name']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
+    
+    // تنفيذ استعلام التحديث للمعلم المحدد
     mysqli_query($conn, "UPDATE teachers SET full_name='$name', email='$email', phone='$phone' WHERE id=$id");
+    
+    // إعادة التوجيه إلى صفحة المعلمين بعد التحديث
     header("Location: teachers.php");
     exit();
 }
 
-// Handle Delete
+// التعامل مع حذف معلم عند استلام GET مع معامل delete
 if (isset($_GET['delete'])) {
-    $id = intval($_GET['delete']);
+    $id = intval($_GET['delete']); // تحويل المعرف إلى عدد صحيح
+    
+    // تنفيذ استعلام الحذف للمعلم المحدد
     mysqli_query($conn, "DELETE FROM teachers WHERE id=$id");
+    
+    // إعادة التوجيه إلى صفحة المعلمين بعد الحذف
     header("Location: teachers.php");
     exit();
 }
 
-// Fetch teachers
+// جلب جميع المعلمين من قاعدة البيانات
 $teachers = mysqli_query($conn, "SELECT * FROM teachers");
 
-// Edit mode
+// التحقق من وضع التعديل لتحميل بيانات المعلم المطلوب تعديله
 $editMode = false;
 $editData = null;
 if (isset($_GET['edit'])) {
@@ -50,11 +63,13 @@ if (isset($_GET['edit'])) {
     <meta charset="UTF-8">
     <title>Manage Teachers</title>
     <style>
+        /* تنسيق عام للصفحة */
         body {
             font-family: 'Segoe UI', sans-serif;
             margin: 0;
             background: #f9f9f9;
         }
+        /* تصميم الشريط الجانبي */
         .sidebar {
             background: #0f172a;
             color: white;
@@ -78,10 +93,12 @@ if (isset($_GET['edit'])) {
         .sidebar a.active, .sidebar a:hover {
             background-color: #1e293b;
         }
+        /* مساحة المحتوى الرئيسية بجانب الشريط الجانبي */
         .main {
             margin-left: 240px;
             padding: 30px;
         }
+        /* تصميم البطاقات (الأقسام البيضاء) */
         .card {
             background: white;
             border-radius: 10px;
@@ -90,6 +107,7 @@ if (isset($_GET['edit'])) {
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         h2 { margin-top: 0; }
+        /* تنسيق حقول الإدخال */
         form input {
             width: 100%;
             padding: 10px;
@@ -97,6 +115,7 @@ if (isset($_GET['edit'])) {
             border-radius: 5px;
             border: 1px solid #ddd;
         }
+        /* تنسيق أزرار الإرسال */
         button {
             background-color: #22c55e;
             color: white;
@@ -105,6 +124,7 @@ if (isset($_GET['edit'])) {
             border-radius: 6px;
             cursor: pointer;
         }
+        /* تنسيق الجدول */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -117,6 +137,7 @@ if (isset($_GET['edit'])) {
             padding: 10px;
             text-align: left;
         }
+        /* روابط التعديل والحذف داخل الجدول */
         a.edit, a.delete {
             margin-right: 10px;
             color: #22c55e;
@@ -138,15 +159,20 @@ if (isset($_GET['edit'])) {
 
 <div class="main">
     <div class="card">
+        <!-- عنوان القسم يعكس إذا كان إضافة أو تعديل -->
         <h2><?php echo $editMode ? 'Edit' : 'Add'; ?> Teacher</h2>
         <form method="POST">
+            <!-- إرسال نوع العملية: إضافة أو تعديل -->
             <input type="hidden" name="action" value="<?php echo $editMode ? 'update' : 'add'; ?>">
             <?php if ($editMode): ?>
+                <!-- عند التعديل، إرسال معرف المعلم -->
                 <input type="hidden" name="id" value="<?php echo $editData['id']; ?>">
             <?php endif; ?>
-            <input type="text" name="full_name" placeholder="Full Name" required value="<?php echo $editMode ? $editData['full_name'] : ''; ?>">
-            <input type="email" name="email" placeholder="Email" required value="<?php echo $editMode ? $editData['email'] : ''; ?>">
-            <input type="text" name="phone" placeholder="Phone" required value="<?php echo $editMode ? $editData['phone'] : ''; ?>">
+            <!-- حقول الإدخال مع تعبئة البيانات عند التعديل -->
+            <input type="text" name="full_name" placeholder="Full Name" required value="<?php echo $editMode ? htmlspecialchars($editData['full_name']) : ''; ?>">
+            <input type="email" name="email" placeholder="Email" required value="<?php echo $editMode ? htmlspecialchars($editData['email']) : ''; ?>">
+            <input type="text" name="phone" placeholder="Phone" required value="<?php echo $editMode ? htmlspecialchars($editData['phone']) : ''; ?>">
+            <!-- زر الإرسال -->
             <button type="submit"><?php echo $editMode ? 'Update' : 'Add'; ?> Teacher</button>
         </form>
     </div>
@@ -162,11 +188,14 @@ if (isset($_GET['edit'])) {
             </tr>
             <?php while ($row = mysqli_fetch_assoc($teachers)): ?>
                 <tr>
+                    <!-- عرض بيانات كل معلم -->
                     <td><?php echo htmlspecialchars($row['full_name']); ?></td>
                     <td><?php echo htmlspecialchars($row['email']); ?></td>
                     <td><?php echo htmlspecialchars($row['phone']); ?></td>
                     <td>
+                        <!-- رابط التعديل يوجه إلى نفس الصفحة مع معرف المعلم -->
                         <a class="edit" href="?edit=<?php echo $row['id']; ?>">Edit</a>
+                        <!-- رابط الحذف مع تأكيد الحذف -->
                         <a class="delete" href="?delete=<?php echo $row['id']; ?>" onclick="return confirm('Delete this teacher?');">Delete</a>
                     </td>
                 </tr>
