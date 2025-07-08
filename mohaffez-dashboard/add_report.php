@@ -54,11 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ayah_count = $conn->query("SELECT ayah_count FROM quran_surahs WHERE id = $surah_id")
         ->fetch_assoc()['ayah_count'] ?? 0;
 
-    // ✅ التحقق من صحة الترتيب وحدود الآيات
+    //  التحقق من صحة الترتيب وحدود الآيات
     if ($from_ayah > $to_ayah || $from_ayah < 1 || $to_ayah > $ayah_count) {
         $error_message = "⚠️ Error: Please ensure the 'From Ayah' is less than or equal to the 'To Ayah', and that both numbers are within the Surah range";
     } else {
-        // ✅ التحقق من التداخل مع أي مقاطع محفوظة مسبقًا في نفس السورة
+        //  التحقق من التداخل مع أي مقاطع محفوظة مسبقًا في نفس السورة
        $overlap_sql = "
     SELECT * FROM reports 
     WHERE student_id = $student_id 
@@ -71,17 +71,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($overlap_result->num_rows > 0) {
             $error_message = "❌ This passage or part of it has already been memorized. Please select a different range.";
         } else {
-            // ✅ حفظ التقرير
+            //  حفظ التقرير
             $conn->query("INSERT INTO reports (student_id, surah_id, from_ayah, to_ayah, created_at)
                           VALUES ($student_id, $surah_id, $from_ayah, $to_ayah, '$created_at')");
 
-            // ✅ حساب التقدم العام من مجموع الآيات
+            //  حساب التقدم العام من مجموع الآيات
             $total = $conn->query("SELECT SUM(to_ayah - from_ayah + 1) as total FROM reports WHERE student_id = $student_id")
                           ->fetch_assoc()['total'] ?? 0;
             $progress = round(($total / 6236) * 100);
             $conn->query("UPDATE students SET progress = $progress WHERE id = $student_id");
 
-            // ✅ إعادة التوجيه للوحة التحكم
+            // إعادة التوجيه للوحة التحكم
             header("Location: index.php?halaqa_id=$halaqa_id&refresh=1");
             exit;
         }
@@ -97,14 +97,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="styles.css">
     <script>
         // تحديث قائمة الآيات عند تغيير السورة المختارة
-//         function updateAyahOptions() {
-//   var surahId = document.getElementById("surah_id").value;
+        function updateAyahOptions() {
+  var surahId = document.getElementById("surah_id").value;
 
-//   if (!surahId) {
-//     document.getElementById("from_ayah").innerHTML = "";
-//     document.getElementById("to_ayah").innerHTML = "";
-//     return;
-//   }
+  if (!surahId) {
+    document.getElementById("from_ayah").innerHTML = "";
+    document.getElementById("to_ayah").innerHTML = "";
+    return;
+  }
 
   var xhttp = new XMLHttpRequest();
 
