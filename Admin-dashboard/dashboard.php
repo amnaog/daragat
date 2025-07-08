@@ -5,11 +5,6 @@ include 'db.php';
 $studentsCount = mysqli_fetch_row(mysqli_query($conn, "SELECT COUNT(*) FROM students"))[0];
 $teachersCount = mysqli_fetch_row(mysqli_query($conn, "SELECT COUNT(*) FROM teachers"))[0];
 $halaqatCount = mysqli_fetch_row(mysqli_query($conn, "SELECT COUNT(*) FROM halaqat"))[0];
-$notificationsResult = mysqli_query($conn, "SELECT message, created_at FROM notifications ORDER BY created_at DESC LIMIT 3");
-$notifications = [];
-while ($row = mysqli_fetch_assoc($notificationsResult)) {
-    $notifications[] = $row;
-}
 
 // generate students activity based on actual creation dates
 $studentsPerDay = [];
@@ -121,7 +116,8 @@ while ($row = mysqli_fetch_assoc($result)) {
     <a href="teachers.php">Teachers</a>
     <a href="students.php">Students</a>
     <a href="halaqat.php">Halaqat</a>
-    <a href="reports.php">Reports</a>
+    <a href="reports.php">Requests</a>
+    <a href="logout.php">Log out</a>
 </div>
 
 <div class="main">
